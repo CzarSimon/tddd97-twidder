@@ -1,0 +1,23 @@
+#welcome {
+	width: 800px;
+	height: 400px;
+}
+
+#logo {
+	width: 340px;
+	height: 400px;
+}
+
+#login {
+	width: 250px;
+	margin-left: 10px;
+	float: right;
+}
+
+h1 {
+	color: #ff0000;
+}
+
+body {
+	width: 100%;
+}
