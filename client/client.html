@@ -2,34 +2,42 @@
 	<head>
 		<meta charset="utf-8">
 		<link href="static/client.css" type="text/css" rel="stylesheet">
+		<!-- Bootstrap css -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
 		<script src="script/client.js" type="text/javascript"></script>
 		<script src="../serverstub.js" type="text/javascript"></script>
+		<!-- Bootstrap javascript -->
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 	</head>
 	<body>
-		<div class="welcome">
+		<div class="welcome col-md-4 center-block">
 			<h1>TWIDDER</h1>
-			<div class='login'>
+			<div class="col-md-12" id="login">
 				<form>
-					<input type="text" name="email" placeholder="Email"></input>
-					<input type="text" name="password" placeholder="Password"></input>
+					<input type="text" class="form-control col-md-12" name="email" placeholder="Email"></input>
+					<br>
+					<input type="text" class="form-control col-md-12" name="password" placeholder="Password"></input>
 				</form>
-				<button type="submit">Login</button>
+				<button type="button" class="btn btn-warning col-md-6" id="login-button" value="login">Login</button>
+				<button type="button" class="btn btn-warning col-md-6" id="show-signup-button" value="show-signup">Sign up</button>
 			</div>
-			<div class="signUp">
+
+
+			<div class="signUp col-md-12" style="display: none;">
 				<form>
-					<input type="text" name="fname" placeholder="First name"></input>
-					<input type="text" name="lname" placeholder="Last name"></input>
+					<input type="text" name="fname" class="form-control col-md-3" placeholder="First name"></input>
+					<input type="text" name="lname" class="form-control col-md-3" placeholder="Last name"></input>
 					<br>
-					<input type="text" name="gender" placeholder="Gender"></input>
-					<input type="text" name="city" placeholder="City"></input>
+					<input type="text" name="gender" class="form-control col-md-6" placeholder="Gender"></input>
+					<input type="text" name="city" class="form-control col-md-6" placeholder="City"></input>
 					<br>
-					<input type="text" name="country" placeholder="Country"></input>
-					<input type="text" name="email" placeholder="Email"></input>
+					<input type="text" name="country" class="form-control col-md-6" placeholder="Country"></input>
+					<input type="text" name="email" class="form-control col-md-6" placeholder="Email"></input>
 					<br>
-					<input type="text" name="password" placeholder="Password"></input>
-					<input type="text" name="repeatPassword" placeholder="Repeat Password"></input>
+					<input type="text" name="password" class="form-control col-md-6" placeholder="Password"></input>
+					<input type="text" name="repeatPassword" class="form-control col-md-6" placeholder="Repeat Password"></input>
 				</form>
-				<button type="submit">Sign up</button>
+				<button type="button" class="btn btn-warning col-md-12" id="signup-button" value="signup">Ok</button>
 			</div>
 			
 		</div>
