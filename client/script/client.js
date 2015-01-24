@@ -1,12 +1,19 @@
-displayView = function(){
-	// the code required to display a view
-	$("body").append()	
-
-};
+displayView = function(currentView){	
+	window.alert(currentView);	
+	$('body').append("<h1>" + currentView + "</h1>")
+}
 
 window.onload = function(){
-	//code that is executed as the page is loaded.
-	//You shall put your own custom code here.
-	window.alert("Hello TDDD97!");
+	var view = '#feedView';
 
-};
+	localStorage.setItem('loggedinusers', 'Simon');
+
+	if (localStorage.getItem("loggedinusers") == null) {
+		view = "#welcomeview"
+	} else {
+		view = localStorage.getItem('loggedinusers');
+	} 
+
+	displayView(view);
+
+}
