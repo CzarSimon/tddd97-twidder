@@ -1,5 +1,6 @@
 displayView = function(){
 	// the code required to display a view
+	$("body").append()	
 
 };
 
