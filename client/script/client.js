@@ -1,19 +1,34 @@
+$("#error-message-box").hide();
+
 displayView = function(currentView){	
-	window.alert(currentView);	
-	$('body').append("<h1>" + currentView + "</h1>")
+	$('body').append(document.getElementById(currentView).text);
+	$('body').css('background-size', '110% 130%')
 }
 
 window.onload = function(){
-	var view = '#feedView';
-
-	localStorage.setItem('loggedinusers', 'Simon');
+	var view = 'null';
 
 	if (localStorage.getItem("loggedinusers") == null) {
-		view = "#welcomeview"
+		view = "welcomeview";
 	} else {
-		view = localStorage.getItem('loggedinusers');
-	} 
-
+		view = "profileview";
+	}
+		
 	displayView(view);
+}
+
+
+displayErrorMessage = function(message) {
+
+}
+
+signupClick = function() {
+	var invalidMessage = null;
+
+	if (document.getElementById("password-SU").value != document.getElementById("repeatPassword-SU")) {
+		invalidMessage = "Not the same as password";
+	}
+
+	displayErrorMessage(invalidMessage)
 
 }
