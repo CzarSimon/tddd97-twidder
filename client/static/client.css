@@ -53,6 +53,11 @@ body {
 	margin: 4% 2% 1% 48%;
 }
 
+#error-message {
+	margin-left: 3%;
+	color: #ff5500;
+}
+
 h1 {
 	color: #ff0000;
 }

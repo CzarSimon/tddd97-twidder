@@ -44,12 +44,33 @@ displayErrorMessage = function(message) {
 	}	
 }
 
+hasEmptyFields = function(formClass) {
+	form = document.getElementsByClassName(formClass);
+
+	for (i=0; i<form.length; i++) {
+		if (form[i].value == "") {
+			return true;
+		} 
+	}
+}
+
+validEmail = function() {
+	var email = document.getElementById("email-SU").value;
+	var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    console.log(re.test(email));
+    return re.test(email);
+}
+
 signupClick = function() {
 	var errorMessage = "nothing";
 	var password = document.getElementById("password-SU").value;
 
 	console.log(password);
-	if (password.length < 5) {
+	if (hasEmptyFields("signup-form") == true) {
+		errorMessage = "All fields must be filed";
+	} else if (validEmail() == false) {
+		errorMessage = "Invalid email"
+	} else if (password.length < 5) {
 		errorMessage = "The password must be at least 5 charactes long"
 	} else if (password != document.getElementById("repeatPassword-SU").value) {
 		errorMessage = "Not the same as password";
@@ -59,35 +80,21 @@ signupClick = function() {
 	if (errorMessage == "nothing") {
 		checkSignUpForm();
 	}	
-
 }
 
 function checkSignUpForm() {
 
 	var formData = [];
+	var form = document.getElementsByClassName("signup-form");
 
-	var error = 0;
-
-	formData["firstname"] = document.getElementById("fname-SU").value;
-	formData["familyname"] = document.getElementById("lname-SU").value;
-	formData["gender"] = document.getElementById("gender-SU").value;
-	formData["city"] = document.getElementById("city-SU").value;
-	formData["country"] = document.getElementById("country-SU").value;
-	formData["email"] = document.getElementById("email-SU").value;
-	formData["password"] = document.getElementById("password-SU").value;
+	formData["firstname"] =  form[0].value; 
+	formData["familyname"] =  form[1].value; 
+	formData["gender"] =  form[2].value; 
+	formData["city"] =  form[3].value;
+	formData["country"] =  form[4].value;
+	formData["email"] =  form[5].value; 
+	formData["password"] =  form[6].value; 
 	
-	/* Denna funkar inte, detta är ingen array (är det ett table? vem vet!)
-	for(i=0; i<formData.length; i++) {
-				alert(i)
-                if (formData[i].value === "" ) {
-                	alert(i)
-                   	error = 1;
-            }
-    }
-    if (error == 1) {
-    	alert("Nått är ej ifyllt");
-    }
-    */
     alert(serverstub.signUp(formData)["message"]);
 }
 
