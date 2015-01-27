@@ -22,7 +22,7 @@
 					<button type="submit" class="myBtn" id="login-button" onClick="loginClick()">Login</button>
 				</div>
 
-				<div class="signUp">       
+				<div id="signUp">       
 					<form id="signup-form">
 						<input type="text" id="fname-SU" name="fname" placeholder="First name" class="signup-form" required></input>
 						<br>
@@ -41,7 +41,8 @@
 						<input type="password" id="repeatPassword-SU" name="repeatPassword" placeholder="Repeat Password" class="signup-form" required></input>
 					</form>
 					<button type="submit" class="myBtn" id="signup-button" onClick="signupClick()">Sign up</button>
-					<div id="error-message-box"></div>
+	
+					<p id="error-message" style="display: none">nothing</p>
 
 				</div>
 			</div>
