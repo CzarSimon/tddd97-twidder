@@ -52,9 +52,24 @@
 		</div>
 		</script>
 		<script type="text/view" id="profileview">
-			<button onClick="logoutClick()">Log out</button>
-			<button onClick="checkUsers()">Info</button>
-			<div id="content"></div>
+			<div id="side-menu">
+				<div id="namespace"><h1>TWIDDER</h1></div>
+				<div id="menu">
+					<img id="menu-img" src="../images/menuLogo.png" width="100%" height="32%">
+					<ul>
+						<li><a>Wall</a></li>
+						<li><a>Search</a></li>
+						<li onClick="checkUsers()"><a>Profile</a></li>
+						<li onClick="logoutClick()"><a>Log out</a></li>
+					</ul>
+				</div>
+			</div>
+			<div id="right-side">
+				<div id="search-bar">
+					<img id="search-img" src="../images/search.png" width="24px" height="24px">
+				</div>
+				<div id="content"></div>
+			</div>
 		</script>
 		<title>TWIDDER</title>
 	</head>

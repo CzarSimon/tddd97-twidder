@@ -1,6 +1,20 @@
 displayView = function(currentView){
 	$('body').html(document.getElementById(currentView).text);
-	$('body').css('background-size', '110% 130%')
+	setViewStyle(currentView);
+	//$('body').css('background-size', '110% 130%')
+}
+
+function setViewStyle(view) {
+	var bod = document.body.style;
+	if (view == "welcomeview") {
+		bod.backgroundImage = 'url("../images/loginImg2.jpg")';
+		$('body').css('background-size', '110% 130%');
+	} else if (view == "profileview") {
+		bod.backgroundImage = '';
+		bod.backgroundColor = '#E8EAF6';
+		console.log(window.innerHeight);
+		document.getElementById("side-menu").style.height = window.innerHeight + 'px';
+	}
 }
 
 window.onload = function(){

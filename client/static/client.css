@@ -1,5 +1,5 @@
 body {
-	background-image: url("../../images/loginImg2.jpg");
+	margin: 0px 0px 0px 0px;
 }
 
 .welcome {
@@ -50,7 +50,6 @@ body {
 	border-color: #ff5500;
 	margin-bottom: 4%;
 	background-color: rgba(200,200,200,0.6);
-	background-o 
 }
 
 #signUp input , .login input {
@@ -72,7 +71,45 @@ h1 {
 	color: #ff0000;
 }
 
-body {
+#side-menu {
+	border-style: none;
+	margin: 0% 0% 0% 0%;
+	width: 22%;
+	background-color: #212121;
+	clear: both;
+	float: left;
+}
+
+#namespace {
+	height: 58px;
 	width: 100%;
-	height: %;
+	background-color: #323232;
+}
+
+#namespace h1 {
+	margin-top: 0px;
+	margin-bottom: 0px;
+	padding-top: 10px;
+	text-align: center;
+	color: #dd5500;
+	font-family: Helvetica;
+}
+
+#right-side {
+	float: right;
+	width: 78%;
+}
+
+#search-img {
+	margin: 16px 10px 17px 40px; 
+}
+
+#search-bar {
+	height: 58px;
+	width: 100%;
+	background-color: #FFFFFF;	
+}
+
+ul {
+	list-style-type: none;
 }
