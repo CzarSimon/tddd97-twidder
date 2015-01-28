@@ -19,7 +19,6 @@ displayErrorMessage = function(message) {
 	var p = document.getElementById("error-message");
 
 	if (message == "nothing") {
-		expandBox("signUp","error-message", false);
 		p.innerHTML = message;
 		div.style.display = 'none';
 	} else {
@@ -80,12 +79,15 @@ function checkSignUpForm() {
 	formData["password"] =  form[6].value; 
 	
     alert(serverstub.signUp(formData)["message"]);
+    loginClick(formData["email"],formData["password"]);
 }
 
-loginClick = function() {
+loginClick = function(email, password) {
 	var login = document.getElementsByClassName("login-form");
+	email = email || login[0].value;
+	password = password || login[1].value
 
-	var user = serverstub.signIn(login[0].value,login[1].value);
+	var user = serverstub.signIn(email,password);
 	if (user["success"]) {
 		setMyToken(user["data"]);
 		console.log(getMyToken());
