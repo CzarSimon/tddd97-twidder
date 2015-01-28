@@ -1,46 +1,32 @@
-displayView = function(currentView){	
-	$('body').append(document.getElementById(currentView).text);
+displayView = function(currentView){
+	$('body').html(document.getElementById(currentView).text);
 	$('body').css('background-size', '110% 130%')
 }
-
 
 window.onload = function(){
 	var view = 'null';
 
-	if (localStorage.getItem("loggedinusers") == null) {
+	if (getMyToken() == null || getMyToken() == "logged out") {
 		view = "welcomeview";
 	} else {
 		view = "profileview";
 	}
-		
 	displayView(view);
 }
 
-expandBox = function(boxID, newElement, expand) {
-	var box = document.getElementById(boxID);
-	var newHeight = 278 + expand*document.getElementById(newElement).offsetHeight;
-
-	if (expand == true) {
-		box.setAttribute("style","height: " + newHeight + "px")	
-	} else {
-		box.setAttribute("style","height: 276px")
-	}
-}
-
 displayErrorMessage = function(message) {
-	//var div = document.getElementById("error-message-box");
+	var div = document.getElementById("error-box");
 	var p = document.getElementById("error-message");
 
 	if (message == "nothing") {
 		expandBox("signUp","error-message", false);
 		p.innerHTML = message;
-		p.style.display = 'none'; // changed from div
+		div.style.display = 'none';
 	} else {
 		if (p.innerHTML != message) {
 			p.innerHTML = message;		
 		}
-		p.style.display = 'block'; //  changed from div	
-		expandBox("signUp","error-message", true)
+		div.style.display = 'block';
 	}	
 }
 
@@ -57,7 +43,6 @@ hasEmptyFields = function(formClass) {
 validEmail = function() {
 	var email = document.getElementById("email-SU").value;
 	var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    console.log(re.test(email));
     return re.test(email);
 }
 
@@ -65,7 +50,6 @@ signupClick = function() {
 	var errorMessage = "nothing";
 	var password = document.getElementById("password-SU").value;
 
-	console.log(password);
 	if (hasEmptyFields("signup-form") == true) {
 		errorMessage = "All fields must be filed";
 	} else if (validEmail() == false) {
@@ -96,5 +80,39 @@ function checkSignUpForm() {
 	formData["password"] =  form[6].value; 
 	
     alert(serverstub.signUp(formData)["message"]);
+}
+
+loginClick = function() {
+	var login = document.getElementsByClassName("login-form");
+
+	var user = serverstub.signIn(login[0].value,login[1].value);
+	if (user["success"]) {
+		setMyToken(user["data"]);
+		console.log(getMyToken());
+		displayView("profileview");	
+	} else {
+		displayErrorMessage(user["message"]);
+	}
+	
+}
+
+setMyToken = function(token) {
+	localStorage.setItem("myToken", token);
+}
+
+getMyToken = function() {
+	return localStorage.getItem("myToken");
+}
+
+checkUsers = function() {
+	var users = localStorage.getItem("loggedinusers");
+	console.log(users);
+	console.log(getMyToken());
+}
+
+logoutClick = function() {
+	console.log(serverstub.signOut(getMyToken())["message"]);
+	setMyToken("logged out");
+	displayView("welcomeview");	
 }
 

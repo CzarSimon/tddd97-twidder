@@ -43,6 +43,16 @@ body {
 	border-width: 1px;
 }
 
+#error-box {
+	width: 100%;
+	border-style: solid;
+	border-width: 1px;
+	border-color: #ff5500;
+	margin-bottom: 4%;
+	background-color: rgba(200,200,200,0.6);
+	background-o 
+}
+
 #signUp input , .login input {
 	width: 94%;
 	margin: 1% 2% 1% 2%;
