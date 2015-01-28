@@ -95,7 +95,6 @@ loginClick = function(email, password) {
 	} else {
 		displayErrorMessage(user["message"]);
 	}
-	
 }
 
 setMyToken = function(token) {
@@ -107,9 +106,18 @@ getMyToken = function() {
 }
 
 checkUsers = function() {
-	var users = localStorage.getItem("loggedinusers");
-	console.log(users);
-	console.log(getMyToken());
+	var user = serverstub.getUserDataByToken(getMyToken())["data"];
+
+	var userInfo = "<p>Name: " + user["firstname"] + " " + user["familyname"] + "</p>\
+					<p>Email: " + user["email"] + "</p>\
+					<p>Gender: " + user["gender"] + "</p>\
+					<p>City: " + user["city"] + "</p>\
+					<p>Country: " + user["country"] + "</p>\
+					<button>Change password</button>";
+
+	console.log(user["password"]);
+	document.getElementById("content").innerHTML = userInfo; 
+
 }
 
 logoutClick = function() {
