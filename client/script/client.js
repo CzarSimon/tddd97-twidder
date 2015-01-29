@@ -9,11 +9,14 @@ function setViewStyle(view) {
 	if (view == "welcomeview") {
 		bod.backgroundImage = 'url("../images/loginImg2.jpg")';
 		$('body').css('background-size', '110% 130%');
+		localStorage.setItem('onPage', 'loggedout');
 	} else if (view == "profileview") {
 		bod.backgroundImage = '';
 		bod.backgroundColor = '#E8EAF6';
-		console.log(window.innerHeight);
 		document.getElementById("side-menu").style.height = window.innerHeight + 'px';
+		wallClick();
+		//myProfile();
+		localStorage.setItem('onPage', 'mine');
 	}
 }
 
@@ -104,7 +107,6 @@ loginClick = function(email, password) {
 	var user = serverstub.signIn(email,password);
 	if (user["success"]) {
 		setMyToken(user["data"]);
-		console.log(getMyToken());
 		displayView("profileview");	
 	} else {
 		displayErrorMessage(user["message"]);
@@ -119,24 +121,197 @@ getMyToken = function() {
 	return localStorage.getItem("myToken");
 }
 
-checkUsers = function() {
-	var user = serverstub.getUserDataByToken(getMyToken())["data"];
+function myProfile() {
+	exitOtherMembersPage();
+	checkUsers(serverstub.getUserDataByToken(getMyToken())["data"]);
+}
 
-	var userInfo = "<p>Name: " + user["firstname"] + " " + user["familyname"] + "</p>\
-					<p>Email: " + user["email"] + "</p>\
-					<p>Gender: " + user["gender"] + "</p>\
-					<p>City: " + user["city"] + "</p>\
-					<p>Country: " + user["country"] + "</p>\
-					<button>Change password</button>";
+checkUsers = function(user) {
+	var userInfo = ""
+	var loggedInUser = serverstub.getUserDataByToken(getMyToken())["data"];
+	if (user.email == loggedInUser.email) {
+ 		user = loggedInUser;
+ 		userInfo = "<div id='change-password'>\
+ 			<input type='password' class='change-password' placeholder='Old password' style='display: none'></input>\
+ 			<input type='password' class='change-password' placeholder='New password' style='display: none'></input>\
+ 		<button id='password-button' onClick='return changePassword()'>Change password</button></div>"
+	} else {
+		localStorage.setItem('onPage', user.email);
+		document.getElementById("new-message").placeholder = "Give " + user.firstname + " a pieace of your mind, bro!";
+	}
 
-	console.log(user["password"]);
-	document.getElementById("content").innerHTML = userInfo; 
+	userInfo = "<div class='content-box profile-box'><div id='user-info'>\
+				<p>Name: &nbsp &nbsp" + user["firstname"] + " " + user["familyname"] + "</p>\
+				<p>Email: &nbsp &nbsp" + user["email"] + "</p>\
+				<p>Gender: &nbsp" + user["gender"] + "</p>\
+				<p>City: &nbsp &nbsp &nbsp " + user["city"] + "</p>\
+				<p>Country: " + user["country"] + "</p></div>" + userInfo + "</div>";
 
+	menuSelector("profile-li");
+	document.getElementById("content").innerHTML = userInfo;
 }
 
 logoutClick = function() {
 	console.log(serverstub.signOut(getMyToken())["message"]);
 	setMyToken("logged out");
 	displayView("welcomeview");	
+}
+
+function exitOtherMembersPage() {
+	localStorage.setItem('onPage','mine');
+	document.getElementById("new-message").placeholder = "What up hipsta?!";
+}
+
+function searchClick() {
+	menuSelector("search-li");
+	document.getElementById("search-blur").style.display = 'block';
+	document.getElementById('search-bar').focus();
+}
+
+function wallClick() {
+	menuSelector("wall-li");
+	exitOtherMembersPage();
+	generateWall(getMyToken());
+}
+
+function aboutClick() {
+	menuSelector("about-li");
+	console.log("About");	
+}
+
+function menuSelector(listId) {
+	var prevClick = localStorage.getItem("prevMenuClick");
+	if (prevClick == "" || prevClick == null) {
+		document.getElementById(listId).style.borderRightWidth = '8px';		
+	} else {
+		document.getElementById(prevClick).style.borderRightWidth = '0px';
+		document.getElementById(listId).style.borderRightWidth = '8px';
+	}
+	localStorage.setItem("prevMenuClick", listId);
+}
+
+function newMessages(oldLength,messages) {
+	var length = messages.length - oldLength;
+	var newContent = '';
+	var clickInstructions = ""; 
+	var author = "";
+
+	for (var i = 1; i < length + 1; i++) {
+		author = '"' + messages[length - i].writer + '"';
+		clickInstructions = "return searchUser(" + author + ")" + "'";
+		newContent = '<div class="content-box message-box"><p>'
+		 + messages[length - i].content
+		 + "</p><p><a class='author' href='' onClick='" + clickInstructions + ">" + messages[length - i].writer 
+		 + "</a></p></div>" + newContent;
+	}
+	return newContent;
+}
+
+function generateWall(token) {
+	var oldWallLength = document.getElementsByClassName("content-box message-box").length;
+	var messages = serverstub.getUserMessagesByToken(token).data;
+	newContent = newMessages(oldWallLength,messages);
+
+	var content = document.getElementById("content");
+
+	if (oldWallLength > 0) {
+		content.innerHTML = newContent + content.innerHTML;	
+	} else {
+		content.innerHTML = newContent;
+	}	
+}
+
+function getNewMessage() {
+	var message = document.getElementById("new-message").value;
+	var token = getMyToken();
+	if (localStorage.getItem('onPage') != 'mine') {
+		serverstub.postMessage(token, message,localStorage.getItem('onPage'));
+		//console.log(localStorage.getItem('onPage'));
+	} else {
+		serverstub.postMessage(token, message);
+		generateWall(token);
+	}
+
+	document.getElementById("new-message").value = "";
+	document.getElementById("new-message").blur();
+	return false;
+}
+
+function printSearchOptions(match) {
+	var options = "<div id='search-options'><div id='infoOption'><h1>Info</h1></div><div id='wallOption'><h1>Wall</h1></div></div>"
+	var place = document.getElementById("search-blur")
+
+	place.innerHTML = place.innerHTML + options;
+}
+
+function searchUser(clickedSearch) {
+
+	var searchField = document.getElementById("search-bar");
+	if (clickedSearch == null) {
+		var match = serverstub.getUserDataByEmail(getMyToken(), searchField.value);
+
+		if (match.success) {
+			//searchField.value = match.data["firstname"] + " " + match.data["familyname"];	
+			checkUsers(match.data);
+			closeSearch();
+		} else {
+			failedSearch(searchField, match.message);
+		}
+	} else {
+		var match = serverstub.getUserDataByEmail(getMyToken(), clickedSearch);
+		checkUsers(match.data);
+	}
+	return false;
+}
+
+function failedSearch(field,message) {
+	var color = field.style.color;
+	field.style.color = 'red';
+	field.value = message;
+
+	setTimeout(function(){
+		field.value = '';
+		field.style.color = color;
+	},600);
+}
+
+function closeSearch() {	
+	var searchField = document.getElementById("search-bar");
+	searchField.value = "";
+	searchField.blur();
+	document.getElementById("search-blur").style.display = 'none';
+}
+
+function changePassword() {
+	var password = document.getElementsByClassName("change-password");
+	var button = document.getElementById("password-button");
+
+	if (password[0].style.display == "none") {
+		password[0].style.display = 'block';
+		password[1].style.display = 'block';
+		button.style.marginTop = '2.1em';
+		password[0].focus();	
+	} else {
+		var result = {"success": false, "message": "New password was to short"};
+		if (password[1].value.length > 4) {
+			result = serverstub.changePassword(getMyToken(),password[0].value,password[1].value);
+		}
+		if (result["success"]) {
+			password[0].value = "";			
+			password[1].value = "";
+			password[0].style.display = 'none';
+			password[1].style.display = 'none';
+			button.style.marginTop = '30%';
+			button.blur();	
+		} else {
+			password[0].setAttribute('type','text');
+			failedSearch(password[0],result.message);
+			password[1].value = "";
+			password[0].focus(); 
+		}
+		console.log(result.message);
+	}
+
+	return false;
 }
 
