@@ -134,10 +134,14 @@ checkUsers = function(user) {
  		userInfo = "<div id='change-password'>\
  			<input type='password' class='change-password' placeholder='Old password' style='display: none'></input>\
  			<input type='password' class='change-password' placeholder='New password' style='display: none'></input>\
- 		<button id='password-button' onClick='return changePassword()'>Change password</button></div>"
+ 		<button id='password-button' class='info-button' onClick='return changePassword()'>Change password</button></div>"
 	} else {
 		localStorage.setItem('onPage', user.email);
+		var toWall = '"' + user.email + '"';
+		var clickInstructions = "return generateGuestWall(" + toWall + ")" + "'";
 		document.getElementById("new-message").placeholder = "Give " + user.firstname + " a pieace of your mind, bro!";
+		userInfo = "<div id='change-password'>\
+		<button class='info-button' onClick='" + clickInstructions + ">Check out that wall</button></div>"
 	}
 
 	userInfo = "<div class='content-box profile-box'><div id='user-info'>\
@@ -175,7 +179,6 @@ function wallClick() {
 }
 
 function aboutClick() {
-	menuSelector("about-li");
 	serverstub.postMessage(getMyToken(),'This is a message by the autoPoster');	
 }
 
@@ -207,10 +210,17 @@ function newMessages(oldLength,messages) {
 	return newContent;
 }
 
+function generateGuestWall(email) {
+	var messages = serverstub.getUserMessagesByEmail(getMyToken(),email);
+	var newContent = newMessages(0, messages.data);
+	document.getElementById("content").innerHTML = newContent;
+	menuSelector("wall-li");
+}
+
 function generateWall(token) {
 	var oldWallLength = document.getElementsByClassName("content-box message-box").length;
 	var messages = serverstub.getUserMessagesByToken(token).data;
-	newContent = newMessages(oldWallLength,messages);
+	var newContent = newMessages(oldWallLength,messages);
 
 	var content = document.getElementById("content");
 
@@ -225,8 +235,9 @@ function getNewMessage() {
 	var message = document.getElementById("new-message").value;
 	var token = getMyToken();
 	if (localStorage.getItem('onPage') != 'mine') {
-		serverstub.postMessage(token, message,localStorage.getItem('onPage'));
-		//console.log(localStorage.getItem('onPage'));
+		var toMail = localStorage.getItem('onPage');
+		serverstub.postMessage(token, message,toMail);
+		generateGuestWall(toMail);
 	} else {
 		serverstub.postMessage(token, message);
 		generateWall(token);
@@ -245,9 +256,14 @@ function printSearchOptions(match) {
 }
 
 function searchUser(clickedSearch) {
-
+	if (clickedSearch == serverstub.getUserDataByToken(getMyToken()).data.email) {
+		document.getElementById("search-bar").value = clickedSearch;
+		clickedSearch = null;
+		exitOtherMembersPage();
+	}
 	var searchField = document.getElementById("search-bar");
 	if (clickedSearch == null) {
+		console.log('inside null');
 		var match = serverstub.getUserDataByEmail(getMyToken(), searchField.value);
 
 		if (match.success) {
@@ -313,6 +329,18 @@ function changePassword() {
 	}
 
 	return false;
+}
+
+function refreshClick() {
+	if (document.getElementById('wall-li').style.borderRightWidth == '8px') {
+		var onPage = localStorage.getItem('onPage');
+		if (onPage == 'mine') {
+			generateWall(getMyToken());
+		} else {
+			generateGuestWall(onPage);
+			console.log('Refreshed');
+		}
+	}
 }
 
 
