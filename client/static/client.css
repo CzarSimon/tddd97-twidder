@@ -107,7 +107,8 @@ h1 {
 	border-style: solid;
 	border-width: 0px;
 	/*border-left-width: 1px;*/
-	border-color: #dd5500;   
+	border-color: #dd5500;
+	cursor: pointer;   
 }
 
 #top-bar {
@@ -124,6 +125,7 @@ h1 {
 	color: #dd5500;
 	font-family: Helvetica;
 	font-size: 1.5em;
+	cursor: pointer;
 }
 
 #menu ul {

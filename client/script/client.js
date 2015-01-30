@@ -176,7 +176,7 @@ function wallClick() {
 
 function aboutClick() {
 	menuSelector("about-li");
-	console.log("About");	
+	serverstub.postMessage(getMyToken(),'This is a message by the autoPoster');	
 }
 
 function menuSelector(listId) {
@@ -314,4 +314,5 @@ function changePassword() {
 
 	return false;
 }
+
 
