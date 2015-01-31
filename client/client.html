@@ -9,44 +9,31 @@
 		<script type="text/view" id="welcomeview">
 			<div class="welcome">
 
-			<div class="logo">
+			<div id="logo">
 			</div>
-			
-			<div id="wrapper">
-				<div class="login">
-					<form id="login-form">
-						<input type="email" id="email-LI" class="login-form" name="email" placeholder="Email" required></input>
-						<br>
-						<input type="password" id="password-LI" class="login-form" name="password" placeholder="Password" required></input>
-					</form>
-					<button type="submit" class="myBtn" id="login-button" onClick="loginClick()">Login</button>
-				</div>
+		
+			<div class="login">
+				<form id="login-form">
+					<input type="email" id="email-LI" class="login-form" name="email" placeholder="Email" required></input>
+					<input type="password" id="password-LI" class="login-form" name="password" placeholder="Password" required></input>
+				</form>
+      
+				<form name="signup-form" id="signup-form"  style="display: none">
+					<input type="text" id="fname-SU" name="fname-SU" placeholder="First name" class="signup-form" required></input>
+					<input type="text" id="lname-SU" name="lname" placeholder="Last name" class="signup-form" required></input>
+					<br>
+					<input type="text" id="gender-SU" name="gender" placeholder="Gender" class="signup-form" required></input>
+					<input type="text" id="city-SU" name="city" placeholder="City" class="signup-form" required></input>
+					<br>
+					<input type="text" id="country-SU" name="country" placeholder="Country" class="signup-form" required></input>
+					<input type="email" id="email-SU" name="email" placeholder="Email" class="signup-form" required></input>
+					<br>
+					<input type="password" id="password-SU" name="password" placeholder="Password" class="signup-form" required></input>
+					<input type="password" id="repeatPassword-SU" name="repeatPassword" placeholder="Repeat Password" class="signup-form" required></input>
+				</form>
+				<button type="submit" class="myBtn" id="login-button" onClick="loginClick()">Login</button>
+				<button type="submit" class="myBtn" id="signup-button" onClick="signupClick()">Sign up</button>
 
-				<div id="error-box" style="display: none">
-					<p id="error-message">nothing</p>
-				</div>
-
-				<div id="signUp">       
-					<form name="signup-form" id="signup-form">
-						<input type="text" id="fname-SU" name="fname-SU" placeholder="First name" class="signup-form" required></input>
-						<br>
-						<input type="text" id="lname-SU" name="lname" placeholder="Last name" class="signup-form" required></input>
-						<br>
-						<input type="text" id="gender-SU" name="gender" placeholder="Gender" class="signup-form" required></input>
-						<br>
-						<input type="text" id="city-SU" name="city" placeholder="City" class="signup-form" required></input>
-						<br>
-						<input type="text" id="country-SU" name="country" placeholder="Country" class="signup-form" required></input>
-						<br>
-						<input type="email" id="email-SU" name="email" placeholder="Email" class="signup-form" required></input>
-						<br>
-						<input type="password" id="password-SU" name="password" placeholder="Password" class="signup-form" required></input>
-						<br>
-						<input type="password" id="repeatPassword-SU" name="repeatPassword" placeholder="Repeat Password" class="signup-form" required></input>
-					</form>
-					<button type="submit" class="myBtn" id="signup-button" onClick="signupClick()">Sign up</button>
-
-				</div>
 			</div>
 			
 		</div>

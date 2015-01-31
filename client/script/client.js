@@ -7,8 +7,6 @@ displayView = function(currentView){
 function setViewStyle(view) {
 	var bod = document.body.style;
 	if (view == "welcomeview") {
-		//bod.backgroundImage = 'url("../images/loginImg2.jpg")';
-		//$('body').css('background-size', '110% 130%');
 		bod.backgroundColor = '#FFFFFF';
 		localStorage.setItem('onPage', 'loggedout');
 	} else if (view == "profileview") {
@@ -64,22 +62,32 @@ validEmail = function() {
 }
 
 signupClick = function() {
-	var errorMessage = "nothing";
-	var password = document.getElementById("password-SU").value;
+	var login = document.getElementById('login-form');
+	var signup = document.getElementById('signup-form');
+	if (signup.style.display == 'none')	{
+		login.style.display = 'none';
+		signup.style.display = 'block';
+		console.log('signup');
+	} else {
+		var errorMessage = "nothing";
+		var password = document.getElementById("password-SU").value;
 
-	if (hasEmptyFields("signup-form") == true) {
-		errorMessage = "All fields must be filed";
-	} else if (validEmail() == false) {
-		errorMessage = "Invalid email"
-	} else if (password.length < 5) {
-		errorMessage = "The password must be at least 5 charactes long"
-	} else if (password != document.getElementById("repeatPassword-SU").value) {
-		errorMessage = "Not the same as password";
-	}
+		if (hasEmptyFields("signup-form") == true) {
+			errorMessage = "All fields must be filed";
+		} else if (validEmail() == false) {
+			errorMessage = "Invalid email"
+		} else if (password.length < 5) {
+			errorMessage = "The password must be at least 5 charactes long"
+		} else if (password != document.getElementById("repeatPassword-SU").value) {
+			errorMessage = "Not the same as password";
+		}
 
-	displayErrorMessage(errorMessage);
-	if (errorMessage == "nothing") {
-		checkSignUpForm();
+		//displayErrorMessage(errorMessage);
+		if (errorMessage == "nothing") {
+			signup.style.display = 'none';
+			login.style.display = 'block';
+			checkSignUpForm();
+		}
 	}	
 }
 
