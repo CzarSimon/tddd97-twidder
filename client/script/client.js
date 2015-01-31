@@ -7,11 +7,12 @@ displayView = function(currentView){
 function setViewStyle(view) {
 	var bod = document.body.style;
 	if (view == "welcomeview") {
-		bod.backgroundImage = 'url("../images/loginImg2.jpg")';
-		$('body').css('background-size', '110% 130%');
+		//bod.backgroundImage = 'url("../images/loginImg2.jpg")';
+		//$('body').css('background-size', '110% 130%');
+		bod.backgroundColor = '#FFFFFF';
 		localStorage.setItem('onPage', 'loggedout');
 	} else if (view == "profileview") {
-		bod.backgroundImage = '';
+		//bod.backgroundImage = '';
 		bod.backgroundColor = '#E8EAF6';
 		document.getElementById("side-menu").style.height = window.innerHeight + 'px';
 		wallClick();
