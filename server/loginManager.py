@@ -1,5 +1,6 @@
 import random
 import databaseStub as db
+from session import session
 
 # --------- Public functions ---------
 
@@ -7,12 +8,12 @@ import databaseStub as db
 # If successfull: logges in the user and assigns it a random token.
 # If unsucessfull: Fails to log in.
 # Parameters: 'email' (type: string), 'password' (type: string)
-# Returns: Dictionary consisting of 'success' (type: boolean), 'message' (type: string), 'data' (type: string)
+# Returns: Dictionary consisting of 'success' (type: boolean), 'message' (type: string), 'data' (type: session class object)
 def signIn(email, password):
 	if ((email in db.dummyUsers.keys()) and (password == db.dummyUsers[email]['password'])):
 		token = __setToken()
-		# Add the user in the database as logged in.
-		return {'success': True, 'message': 'Successfully signed in.', 'data': token}
+		newSession = session(token, email)
+		return {'success': True, 'message': 'Successfully signed in.', 'data': newSession}
 	else:
 		return {'success': False, 'message': 'Wrong username or password.'}
 

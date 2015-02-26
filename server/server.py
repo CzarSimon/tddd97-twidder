@@ -22,11 +22,18 @@ def testInput(name):
 	else:
 		return "Your name is " + name
 
+
 @app.route("/sign-in", methods=["POST"])
 def signIn():
 	email = request.form['email']
 	password = request.form['password']
-	return loginManager.signIn(email,password)
+	response = loginManager.signIn(email,password)
+	if response['success']:
+		session = response['data']
+		return response['message'] + str(session.sessionCount)
+	else:
+		return response['message']
+
 
 @app.route("/sign-up", methods=["POST"])
 def signUp():
@@ -60,7 +67,8 @@ def postMessage():
 	message = request.form['message']
 	return sessionFunctions.postMessage(token, email, message)
 
-
+def checkSession():
+	print(session.email)
 
 if __name__ == "__main__":
 	app.debug = True
