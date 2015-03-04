@@ -1,6 +1,7 @@
 from flask import session
 import random, re
 import databaseStub as db
+from ..database import database_helper
 
 # --------- Public functions ---------
 
@@ -39,6 +40,12 @@ def signOut(token):
 		return {"success": True, "message": "Successfully signed out."}
 	else:
 		return {"success": False, "message": "You are not signed in."}
+
+# Initialises a new database. 
+def startNewDatabase():
+	# database.init_db()
+	return "Database initiated"
+
 
 # --------- End of public functions ---------
 

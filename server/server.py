@@ -13,7 +13,7 @@ app.secret_key = 'SWNGh6pY5LRy7zka82c5OUFyAkbxU5AwB2V5'
 
 @app.route("/")
 def runClient():
-	return loginManager.test()
+	return loginManager.getDatabaseDirectory()
 
 @app.route("/test/<name>")
 def testInput(name):
@@ -70,6 +70,11 @@ def postMessage():
 	email = request.form['email']
 	message = request.form['message']
 	return sessionFunctions.postMessage(token, email, message)
+
+@app.route('/init-db', methods=['POST','GET'])
+def initDatabase():
+	return loginManager.startNewDatabase()
+
 
 def checkSession(token):
 	if token in session:
