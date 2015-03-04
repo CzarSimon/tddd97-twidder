@@ -130,6 +130,10 @@ getMyToken = function() {
 	return localStorage.getItem("myToken");
 }
 
+localTokenToStorage = function() {
+	
+}
+
 function myProfile() {
 	exitOtherMembersPage();
 	checkUsers(serverstub.getUserDataByToken(getMyToken())["data"]);

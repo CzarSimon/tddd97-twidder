@@ -23,3 +23,5 @@ class session(object):
 			return self.token
 		else:
 			return None
+
+			

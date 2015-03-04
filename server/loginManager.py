@@ -1,6 +1,6 @@
-import random
+from flask import session
+import random, re
 import databaseStub as db
-from session import session
 
 # --------- Public functions ---------
 
@@ -10,26 +10,32 @@ from session import session
 # Parameters: 'email' (type: string), 'password' (type: string)
 # Returns: Dictionary consisting of 'success' (type: boolean), 'message' (type: string), 'data' (type: session class object)
 def signIn(email, password):
-	if ((email in db.dummyUsers.keys()) and (password == db.dummyUsers[email]['password'])):
-		token = __setToken()
-		newSession = session(token, email)
-		return {'success': True, 'message': 'Successfully signed in.', 'data': newSession}
+	if __validate(email, password):
+		#token = __setToken() 
+		token = db.getMyToken() # Will be removed when connected.
+		if __noMultipleSessons(token):
+			session[token] = email 		
+			return {'success': True, 'message': 'Successfully signed in.', 'data': token}
+		else:
+			return {'success': False, 'message': 'Wrong username or password.'}
 	else:
 		return {'success': False, 'message': 'Wrong username or password.'}
 
 
-def signUp(email, password, firstname, familyname, gender, city, country):
-	print(email)
-	return "signed up as " + db.dummyUsers[email]['email']
+def signUp(email, password, repeatPassword, firstname, familyname, gender, city, country):
+	validInfo = __signUpValidation(email, password, repeatPassword)
+	if validInfo['success']:
+		signIn(email, password)
+		# Add the user info to the database.
 
+	return validInfo
 
 # Checks if the user is logged in and signs them out if true.
 # Parameters: 'token' (type: string)
 # Returns: Dictionary consitsting of 'success' (type: boolean), 'message': (type: string)
 def signOut(token):
-	token = db.getMyToken()
-	if (token in db.loggedInDummyUsers.keys()):
-		# Remove the users form the logged in table in the database
+	if token in session:
+		session.pop(token) # Removes the logged in users session.
 		return {"success": True, "message": "Successfully signed out."}
 	else:
 		return {"success": False, "message": "You are not signed in."}
@@ -50,4 +56,36 @@ def __setToken():
 		token += random.choice(letters)
 	return token
 
+# Checks if the given email belongs to a registred user and that the given password corresponds to that user.
+# Parameters: 'email' (type: String) 'password' (type: Sting)
+# Returns: (type: boolean) 
+def __validate(email, password):
+	if ((email in db.dummyUsers.keys()) and (password == db.dummyUsers[email]['password'])):
+		return True
+	else:
+		return False
+
+# Checks that the token is not used by any other user
+# Parameters: 'token' (type: string)
+# Returns: (type: boolean)
+def __noMultipleSessons(token):
+	if token in session:
+		return False
+	else:
+		return True
+
+def __signUpValidation(email, password, repeatPassword):
+	if re.match(r"... ^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$ ...", email):
+		return {'success': False, 'message': 'Invalid email'}
+	elif (len(password) < 5):
+		return {'success': False, 'message': 'Password must be at least 5 characters long'}
+	elif (password != repeatPassword):
+		return {'success': False, 'message': 'Passwords are dissimilar'}
+	else:
+		return {'success': True, 'message': 'Valid signup information'}
+
+
 # --------- End of private functions ---------
+
+def tempSendToken():
+	return db.getMyToken()

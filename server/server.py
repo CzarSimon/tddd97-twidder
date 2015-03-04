@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, session
 import os, loginManager, sessionFunctions
 
 def setTemplateFolder():
@@ -8,6 +8,8 @@ def setTemplateFolder():
 
 folderRoute = setTemplateFolder()
 app = Flask(__name__) #, template_folder=setTemplateFolder()
+app.secret_key = 'SWNGh6pY5LRy7zka82c5OUFyAkbxU5AwB2V5'
+
 
 @app.route("/")
 def runClient():
@@ -29,20 +31,22 @@ def signIn():
 	password = request.form['password']
 	response = loginManager.signIn(email,password)
 	if response['success']:
-		session = response['data']
-		return response['message'] + str(session.sessionCount)
+		return response['message'] + ' ' + checkSession(response['data'])
 	else:
 		return response['message']
 
 
 @app.route("/sign-up", methods=["POST"])
 def signUp():
-	test = request.form['email']
-	return loginManager.signUp(test,'test','test','test','test','test','test')
+	email = request.form['email']
+	password = request.form['password']
+	repeatPassword = request.form['repeatPassword']
+	return loginManager.signUp(email, password, repeatPassword,'test','test','test','test','test')['message']
 
 @app.route("/sign-out", methods=["POST"])
 def signOut():
-	return loginManager.signOut('test')
+	token = getUserToken()
+	return loginManager.signOut(token)['message']
 
 @app.route("/change-password", methods=['POST'])
 def changePassword():
@@ -67,8 +71,19 @@ def postMessage():
 	message = request.form['message']
 	return sessionFunctions.postMessage(token, email, message)
 
-def checkSession():
-	print(session.email)
+def checkSession(token):
+	if token in session:
+		print(session)
+		return 'you are logged in'
+	else:
+		return 'not logged in'
+
+def getUserToken():
+
+	# Will be used to extract token from the users cookie
+	token = loginManager.tempSendToken()
+
+	return token
 
 if __name__ == "__main__":
 	app.debug = True
