@@ -11,11 +11,10 @@ CREATE TABLE USERS (email TEXT,
 					country TEXT,
 					CONSTRAINT pk_users PRIMARY KEY (email));
 
-CREATE TABLE MESSAGES  (ID INTEGER AUTO_INCREMENT,
+CREATE TABLE MESSAGES  (ID INTEGER PRIMARY KEY AUTOINCREMENT,
 						email_poster TEXT,
 						email_wall TEXT,
 						message TEXT,
 						FOREIGN KEY (email_poster) REFERENCES USERS(email),
-						FOREIGN KEY (email_wall) REFERENCES USERS(email),
-						CONSTRAINT pk_messages PRIMARY KEY (ID));
+						FOREIGN KEY (email_wall) REFERENCES USERS(email));
 
