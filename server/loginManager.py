@@ -1,8 +1,6 @@
 from flask import session
 import random, re
-import databaseStub as db
-from ..database import database_helper
-
+import databaseStub as db, database_helper as database
 # --------- Public functions ---------
 
 # Checkes that the entered email is registred and that the password corresponds to the registred one.
@@ -11,7 +9,7 @@ from ..database import database_helper
 # Parameters: 'email' (type: string), 'password' (type: string)
 # Returns: Dictionary consisting of 'success' (type: boolean), 'message' (type: string), 'data' (type: session class object)
 def signIn(email, password):
-	if __validate(email, password):
+	if database.sign_in(email, password):
 		#token = __setToken() 
 		token = db.getMyToken() # Will be removed when connected.
 		if __noMultipleSessons(token):
@@ -26,8 +24,11 @@ def signIn(email, password):
 def signUp(email, password, repeatPassword, firstname, familyname, gender, city, country):
 	validInfo = __signUpValidation(email, password, repeatPassword)
 	if validInfo['success']:
-		signIn(email, password)
-		# Add the user info to the database.
+		# Adds the user info to the database.
+		database.sign_up(email, password, firstname, familyname, gender, city, country) 
+		
+		# Logs in the user
+		signIn(email, password) 
 
 	return validInfo
 
@@ -43,7 +44,7 @@ def signOut(token):
 
 # Initialises a new database. 
 def startNewDatabase():
-	# database.init_db()
+	database.init_db()
 	return "Database initiated"
 
 

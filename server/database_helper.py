@@ -4,7 +4,7 @@ from flask import g, Flask
 import sys
 
 DATABASE = 'database.db'
-con = sqlite3.connect('database.db')
+con = sqlite3.connect('database.db', check_same_thread=False)
 
 app = Flask(__name__)
 app.config.from_object(__name__)
@@ -46,32 +46,26 @@ def sign_in(email, password):
         cur = con.cursor()
         cur.execute('SELECT password FROM users WHERE email = ?', (email,))
         data = cur.fetchone()
-        if data[0] == password:
+        if (data is not None and data[0] == password):
             return True
         else:
             return False
 
 
-"""
-=======
 # Updates the USER table with a new password for the corresponding email
 # Parameters: 'email' (type: string), 'new_password' (type: string), 
 # Returns: 
 
->>>>>>> 97858bcb5899972bdb1f0205ce477a90b6f9221f
 def change_password(email, new_password):
     with con:
         cur = con.cursor()
         cur.execute('UPDATE users SET password = ? WHERE email = ?', (new_password,email))
 
 
-<<<<<<< HEAD
-=======
 # Returns all the data in the USER table associated with a specific email adress
 # Parameters: 'email' (type: string)
 # Returns: 'data' (type: list)
 
->>>>>>> 97858bcb5899972bdb1f0205ce477a90b6f9221f
 def get_user_data_by_email(email):
     with con:
         cur = con.cursor()
@@ -102,7 +96,7 @@ def post_message (poster_email, message, wall_email):
         cur.execute('INSERT INTO messages(email_poster,email_wall,message) values(?,?,?)',(poster_email,wall_email,message))
 
 
-
+"""
 
 
 app.config.from_envvar('FLASKR_SETTINGS', silent=True)
@@ -111,11 +105,6 @@ if __name__ == '__main__':
 	app.debub = True
 	app.run()
         init_db()
-<<<<<<< HEAD
-        sign_up('anders.lietha@gmail.com','asd', 'mikael','lietha','male', 'linkoping','sweden')
-        print("Hello")
-"""
-=======
         sign_up('Sven@gmail.com','asd', 'Sven','Balle','male', 'linkoping','sweden')
         sign_up('Bengt@hotmail.com','qwerty','Bengt','Ballong','MEJL','STHLM','Denmark')
         change_password('Sven@gmail.com','Svennebanan')
@@ -130,5 +119,4 @@ if __name__ == '__main__':
         print(sign_in('Sven@gmail.com','asd'))
         print(sign_in('Sven@gmail.com','Svennebanan'))
 
-
->>>>>>> 97858bcb5899972bdb1f0205ce477a90b6f9221f
+"""

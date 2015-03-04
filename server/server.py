@@ -41,7 +41,12 @@ def signUp():
 	email = request.form['email']
 	password = request.form['password']
 	repeatPassword = request.form['repeatPassword']
-	return loginManager.signUp(email, password, repeatPassword,'test','test','test','test','test')['message']
+	firstname = request.form['firstname']
+	familyname = request.form['familyname']
+	gender = request.form['gender']
+	city = request.form['city']
+	country = request.form['country']
+	return loginManager.signUp(email, password, repeatPassword,firstname,familyname,gender,city,country)['message']
 
 @app.route("/sign-out", methods=["POST"])
 def signOut():
@@ -73,7 +78,11 @@ def postMessage():
 
 @app.route('/init-db', methods=['POST','GET'])
 def initDatabase():
-	return loginManager.startNewDatabase()
+	confirmation = request.form['confirm']
+	if confirmation == 'yes':
+		return loginManager.startNewDatabase()
+	else:
+		return "don't do it man"
 
 
 def checkSession(token):
