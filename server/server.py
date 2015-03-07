@@ -24,17 +24,14 @@ def testInput(name):
 	else:
 		return "Your name is " + name
 
+# ----- Login routes -----
 
+# Route for logging in, calls the signIn functions in the loginManager module.
 @app.route("/sign-in", methods=["POST"])
 def signIn():
 	email = request.form['email']
 	password = request.form['password']
-	response = loginManager.signIn(email,password)
-	if response['success']:
-		return response['message'] + ' ' + checkSession(response['data'])
-	else:
-		return response['message']
-
+	return loginManager.signIn(email,password)
 
 @app.route("/sign-up", methods=["POST"])
 def signUp():
@@ -50,8 +47,16 @@ def signUp():
 
 @app.route("/sign-out", methods=["POST"])
 def signOut():
-	token = getUserToken()
+	token = request.form['token']
 	return loginManager.signOut(token)['message']
+
+# ----- End of login routes -----
+
+@app.route('/clear-session', methods=['POST', 'GET'])
+def clearSesison():
+	return session.clear()
+
+# ----- Routes to be called once the user is logged in 'session functions' -----
 
 @app.route("/change-password", methods=['POST'])
 def changePassword():
@@ -60,14 +65,28 @@ def changePassword():
 	newPassword = request.form['newPassword']
 	return sessionFunctions.changePassword(token,oldPassword,newPassword)
 
-@app.route("/wall", methods=['POST'])
-def getWall():
+@app.route("/get-user-data-by-token", methods=['POST','GET'])
+def getUserDataByToken():
+	token = request.form['token']
+	return sessionFunctions.getUserDataByToken(token)
+
+@app.route("/get-user-data-by-email", methods=['POST','GET'])
+def getUserDataByEmail():
 	token = request.form['token']
 	email = request.form['email']
-	if not email:
-		return sessionFunctions.getUserMessagesByToken(token)
-	else:
-		return sessionFunctions.getUserMessagesByEmail(token, email)
+	return sessionFunctions.getUserDataByEmail(token, email)
+
+@app.route("/my-wall", methods=['POST'])
+def getMyWall():
+	token = request.form['token']
+	return sessionFunctions.getUserMessagesByToken(token)
+		
+@app.route("/other-wall", methods=['POST'])
+def getOtherWall():
+	token = request.form['token']
+	email = request.form['email']
+	return sessionFunctions.getUserMessagesByEmail(token, email)
+
 
 @app.route('/post-message', methods=['POST'])
 def postMessage():
@@ -76,6 +95,9 @@ def postMessage():
 	message = request.form['message']
 	return sessionFunctions.postMessage(token, email, message)
 
+# ----- End of 'session functions' -----
+
+
 @app.route('/init-db', methods=['POST','GET'])
 def initDatabase():
 	confirmation = request.form['confirm']
@@ -83,7 +105,6 @@ def initDatabase():
 		return loginManager.startNewDatabase()
 	else:
 		return "don't do it man"
-
 
 def checkSession(token):
 	if token in session:
@@ -95,7 +116,7 @@ def checkSession(token):
 def getUserToken():
 
 	# Will be used to extract token from the users cookie
-	token = loginManager.tempSendToken()
+	token = 'not a token'
 
 	return token
 

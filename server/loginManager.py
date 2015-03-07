@@ -1,5 +1,5 @@
 from flask import session
-import random, re
+import random, re, json
 import databaseStub as db, database_helper as database
 # --------- Public functions ---------
 
@@ -7,29 +7,29 @@ import databaseStub as db, database_helper as database
 # If successfull: logges in the user and assigns it a random token.
 # If unsucessfull: Fails to log in.
 # Parameters: 'email' (type: string), 'password' (type: string)
-# Returns: Dictionary consisting of 'success' (type: boolean), 'message' (type: string), 'data' (type: session class object)
+# Returns: Dictionary consisting of 'success' (type: boolean), 'message' (type: string), 'data' (type: string)
 def signIn(email, password):
-	if database.sign_in(email, password):
-		#token = __setToken() 
-		token = db.getMyToken() # Will be removed when connected.
-		if __noMultipleSessons(token):
-			session[token] = email 		
-			return {'success': True, 'message': 'Successfully signed in.', 'data': token}
-		else:
-			return {'success': False, 'message': 'Wrong username or password.'}
+	if database.sign_in(email, password): # Validates the log in info in the database
+		token = __setToken() 
+		session[token] = email 		
+		return json.dumps({'success': True, 'message': 'Successfully signed in.', 'data': token})
 	else:
-		return {'success': False, 'message': 'Wrong username or password.'}
+		return json.dumps({'success': False, 'message': 'Wrong username or password.'})
 
-
+"""
+Checks that the user info given is valid. If it is the function adds
+the info to the database and calls the signIn function. If the information
+is not vaild the function returns an error message.
+Parameters: 'email', 'password', 'repeatPassword', 'firstname', 'familyname', 'gender', 'city', 'country' (type: string)
+Returns: Dictionary consisting of 'success' (type: boolean), 'message' (type: string)
+"""
 def signUp(email, password, repeatPassword, firstname, familyname, gender, city, country):
 	validInfo = __signUpValidation(email, password, repeatPassword)
 	if validInfo['success']:
 		# Adds the user info to the database.
 		database.sign_up(email, password, firstname, familyname, gender, city, country) 
-		
 		# Logs in the user
-		signIn(email, password) 
-
+		signIn(email, password)
 	return validInfo
 
 # Checks if the user is logged in and signs them out if true.
@@ -46,7 +46,6 @@ def signOut(token):
 def startNewDatabase():
 	database.init_db()
 	return "Database initiated"
-
 
 # --------- End of public functions ---------
 
@@ -94,6 +93,3 @@ def __signUpValidation(email, password, repeatPassword):
 
 
 # --------- End of private functions ---------
-
-def tempSendToken():
-	return db.getMyToken()

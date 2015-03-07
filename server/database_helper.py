@@ -5,6 +5,7 @@ import sys
 
 DATABASE = 'database.db'
 con = sqlite3.connect('database.db', check_same_thread=False)
+con.row_factory = sqlite3.Row
 
 app = Flask(__name__)
 app.config.from_object(__name__)
@@ -73,6 +74,13 @@ def get_user_data_by_email(email):
         data = cur.fetchone()
         return data
 
+def get_current_password(email):
+    with con:
+        cur = con.cursor()
+        cur.execute('SELECT password FROM users WHERE email = ?',(email,))
+        data = cur.fetchone()[0]
+        print(data)
+        return data
 
 # Returns all the messages posted at certain users wall
 # Parameters: 'email' (type: string)
