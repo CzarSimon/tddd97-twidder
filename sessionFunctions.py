@@ -32,7 +32,7 @@ def getUserDataByToken(token):
 	return getUserDataByEmail(token, email)
 
 """
-Checks that the user is logged in and returns
+Checks that the user is logged in and returns the user data if so.
 """	
 def getUserDataByEmail(token, email):
 	if token in session:

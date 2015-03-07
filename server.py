@@ -15,15 +15,6 @@ app.secret_key = 'SWNGh6pY5LRy7zka82c5OUFyAkbxU5AwB2V5'
 def runClient():
 	return loginManager.getDatabaseDirectory()
 
-@app.route("/test/<name>")
-def testInput(name):
-	if (name == "byEmail"):
-		return sessionFunctions.getUserDataByEmail(name,name)
-	elif (name == "byToken"):
-		return sessionFunctions.getUserDataByToken(name)
-	else:
-		return "Your name is " + name
-
 # ----- Login routes -----
 
 # Route for logging in, calls the signIn functions in the loginManager module.
@@ -43,7 +34,7 @@ def signUp():
 	gender = request.form['gender']
 	city = request.form['city']
 	country = request.form['country']
-	return loginManager.signUp(email, password, repeatPassword,firstname,familyname,gender,city,country)['message']
+	return loginManager.signUp(email, password, repeatPassword,firstname,familyname,gender,city,country)
 
 @app.route("/sign-out", methods=["POST"])
 def signOut():
@@ -55,6 +46,11 @@ def signOut():
 @app.route('/clear-session', methods=['POST', 'GET'])
 def clearSesison():
 	return session.clear()
+
+@app.route('/get-sessions', methods=['POST','GET'])
+def getSession():
+	print session
+	return 'See terminal for sessoins'
 
 # ----- Routes to be called once the user is logged in 'session functions' -----
 
