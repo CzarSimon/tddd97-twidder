@@ -10,17 +10,13 @@ def setTemplateFolder():
 folderRoute = setTemplateFolder()
 """
 
-app = Flask(__name__) #, template_folder=setTemplateFolder()
+app = Flask(__name__, static_url_path='/static') 
 app.secret_key = 'SWNGh6pY5LRy7zka82c5OUFyAkbxU5AwB2V5'
 
 
-@app.route("/")
+@app.route("/", methods=['POST', 'GET'])
 def runClient():
-	return loginManager.getDatabaseDirectory()
-
-@app.route("/client", methods=['POST', 'GET'])
-def startClient():
-	return render_template('client.html')
+	return app.send_static_file('client.html')
 
 # ----- Login routes -----
 

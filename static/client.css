@@ -12,7 +12,7 @@ body {
 	width: 60%;
 	height: 360px;
 	margin-left: 20%;
-	background-image: url("../images/logo2.png");
+	background-image: url("static/images/logo2.png");
 	background-position: center;
 }
 
