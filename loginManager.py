@@ -30,7 +30,7 @@ def signUp(email, password, repeatPassword, firstname, familyname, gender, city,
 		database.sign_up(email, password, firstname, familyname, gender, city, country) 
 		# Logs in the user
 		signIn(email, password)
-	return validInfo
+	return json.dumps(validInfo)
 
 # Checks if the user is logged in and signs them out if true.
 # Parameters: 'token' (type: string)

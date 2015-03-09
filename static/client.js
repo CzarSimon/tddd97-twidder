@@ -1,3 +1,6 @@
+var root_url = "http//:127.0.0.1:5000/"
+
+
 displayView = function(currentView){
 	$('body').html(document.getElementById(currentView).text);
 	setViewStyle(currentView);
@@ -128,7 +131,7 @@ login = function(email, password) {
 	password = password || login[1].value
 
 	var temp_form = "email=" + email + "&password=" + password
-	ajaxPost(temp_form)
+	ajaxPost('sign-in', temp_form)
 
 	var user = serverstub.signIn(email,password);
 	if (user["success"]) {
@@ -374,7 +377,7 @@ function refreshClick() {
 	}
 }
 
-ajaxPost = function(form){
+ajaxPost = function(route, form){
 	var xmlhttp;
 	var response;
 	if (window.XMLHttpRequest){
@@ -387,7 +390,7 @@ ajaxPost = function(form){
 			console.log(xmlhttp.responseText)
 		}
 	}
-	xmlhttp.open("POST", "http://127.0.0.1:5000/sign-in", true);
+	xmlhttp.open("POST", route, true);
 	xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 	xmlhttp.send(form)
 	return response

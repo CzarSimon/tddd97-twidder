@@ -109,7 +109,7 @@ def post_message (poster_email, message, wall_email):
         cur.execute('INSERT INTO messages(email_poster,email_wall,message) values(?,?,?)',(poster_email,wall_email,message))
 
 
-
+"""
 app.config.from_envvar('FLASKR_SETTINGS', silent=True)
 
 if __name__ == '__main__':
@@ -129,3 +129,4 @@ if __name__ == '__main__':
         print(get_user_message_by_email('Bengt@hotmail.com'))
         print(sign_in('Sven@gmail.com','asd'))
         print(sign_in('Sven@gmail.com','Svennebanan'))
+"""

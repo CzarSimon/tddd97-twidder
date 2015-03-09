@@ -1,14 +1,6 @@
 from flask import Flask, render_template, request, session
 import os, loginManager, sessionFunctions
 
-"""
-def setTemplateFolder():
-	originalDir = os.getcwd()
-	targetDir = os.path.abspath(os.path.join(originalDir, os.pardir)) + '/client/'
-	return targetDir
-
-folderRoute = setTemplateFolder()
-"""
 
 app = Flask(__name__, static_url_path='/static') 
 app.secret_key = 'SWNGh6pY5LRy7zka82c5OUFyAkbxU5AwB2V5'
