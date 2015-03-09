@@ -122,6 +122,24 @@ loginClick = function(email, password) {
 	}
 }
 
+login = function(email, password) {
+	var login = document.getElementsByClassName("login-form");
+	email = email || login[0].value;
+	password = password || login[1].value
+
+	var temp_form = "email=" + email + "&password=" + password
+	ajaxPost(temp_form)
+
+	var user = serverstub.signIn(email,password);
+	if (user["success"]) {
+		setMyToken(user["data"]);
+		displayView("profileview");	
+	} else {
+		displayErrorMessage(user["message"]);
+	}
+}
+
+
 setMyToken = function(token) {
 	localStorage.setItem("myToken", token);
 }
@@ -354,6 +372,25 @@ function refreshClick() {
 			console.log('Refreshed');
 		}
 	}
+}
+
+ajaxPost = function(form){
+	var xmlhttp;
+	var response;
+	if (window.XMLHttpRequest){
+		xmlhttp = new XMLHttpRequest();
+	} else {
+		xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+	}
+	xmlhttp.onreadystatechange = function(){
+		if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+			console.log(xmlhttp.responseText)
+		}
+	}
+	xmlhttp.open("POST", "http://127.0.0.1:5000/sign-in", true);
+	xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+	xmlhttp.send(form)
+	return response
 }
 
 
