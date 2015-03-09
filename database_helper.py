@@ -2,6 +2,8 @@ import sqlite3
 from contextlib import closing
 from flask import g, Flask
 import sys
+from werkzeug.security import generate_password_hash, \
+     check_password_hash
 
 DATABASE = 'database.db'
 con = sqlite3.connect('database.db', check_same_thread=False)
@@ -25,7 +27,7 @@ def init_db():
         db.commit()
 
 
-# Inserts a user into the USERS table in the database
+# Inserts a user into the USERS table in the database, the password is hashed with a built-in hashing function
 # Parameters: 'email' (type: string), 'password' (type: string), 
 #'firstname' (type: string), 'familyname' (type: string), 
 #'gender' (type: string), 'city' (type: string),
@@ -33,12 +35,14 @@ def init_db():
 # Returns: 
 
 def sign_up(email, password, firstname, familyname, gender, city, country):
+    hashed_password = generate_password_hash(password)
     with con:
         cur = con.cursor()
-        cur.execute('INSERT INTO users (email, password, firstname, familyname, gender, city, country) VALUES (?,?,?,?,?,?,?)', (email, password, firstname, familyname, gender, city, country))
+        cur.execute('INSERT INTO users (email, password, firstname, familyname, gender, city, country) VALUES (?,?,?,?,?,?,?)', (email, hashed_password, firstname, familyname, gender, city, country))
 
 
 # Validation function that checks if the provided password is connected to a specific email.
+# It takes the hashing into consideration
 # Parameters: 'email' (type: string), 'password' (type: string), 
 # Returns: (type: boolean)
 
@@ -47,7 +51,7 @@ def sign_in(email, password):
         cur = con.cursor()
         cur.execute('SELECT password FROM users WHERE email = ?', (email,))
         data = cur.fetchone()
-        if (data is not None and data[0] == password):
+        if (data is not None and check_password_hash(str(data[0]),password)):
             return True
         else:
             return False
@@ -58,9 +62,10 @@ def sign_in(email, password):
 # Returns: 
 
 def change_password(email, new_password):
+    hashed_password = generate_password_hash(new_password)
     with con:
         cur = con.cursor()
-        cur.execute('UPDATE users SET password = ? WHERE email = ?', (new_password,email))
+        cur.execute('UPDATE users SET password = ? WHERE email = ?', (hashed_password,email))
 
 
 # Returns all the data in the USER table associated with a specific email adress
@@ -104,8 +109,6 @@ def post_message (poster_email, message, wall_email):
         cur.execute('INSERT INTO messages(email_poster,email_wall,message) values(?,?,?)',(poster_email,wall_email,message))
 
 
-"""
-
 
 app.config.from_envvar('FLASKR_SETTINGS', silent=True)
 
@@ -126,5 +129,3 @@ if __name__ == '__main__':
         print(get_user_message_by_email('Bengt@hotmail.com'))
         print(sign_in('Sven@gmail.com','asd'))
         print(sign_in('Sven@gmail.com','Svennebanan'))
-
-"""
