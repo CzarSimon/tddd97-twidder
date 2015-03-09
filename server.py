@@ -1,24 +1,27 @@
 from flask import Flask, render_template, request, session
 import os, loginManager, sessionFunctions
 
+"""
 def setTemplateFolder():
 	originalDir = os.getcwd()
 	targetDir = os.path.abspath(os.path.join(originalDir, os.pardir)) + '/client/'
 	return targetDir
 
 folderRoute = setTemplateFolder()
-app = Flask(__name__) #, template_folder=setTemplateFolder()
+"""
+
+app = Flask(__name__, static_url_path='/static') 
 app.secret_key = 'SWNGh6pY5LRy7zka82c5OUFyAkbxU5AwB2V5'
 
 
-@app.route("/")
+@app.route("/", methods=['POST', 'GET'])
 def runClient():
-	return loginManager.getDatabaseDirectory()
+	return app.send_static_file('client.html')
 
 # ----- Login routes -----
 
 # Route for logging in, calls the signIn functions in the loginManager module.
-@app.route("/sign-in", methods=["POST"])
+@app.route("/sign-in", methods=["POST","GET"])
 def signIn():
 	email = request.form['email']
 	password = request.form['password']
