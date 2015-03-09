@@ -79,13 +79,21 @@ def get_user_data_by_email(email):
         data = cur.fetchone()
         return data
 
-def get_current_password(email):
+# Function that compares a given password to the hashed password assiciated with the
+# given email in the database
+# Parameters: 'email' (type: string), 'password' (type: string)
+# Returns: (type: boolean)
+
+def compare_password(email,OldPassword):
     with con:
         cur = con.cursor()
-        cur.execute('SELECT password FROM users WHERE email = ?',(email,))
-        data = cur.fetchone()[0]
-        print(data)
-        return data
+        cur.execute('SELECT password FROM users WHERE email = ?', (email,))
+        data = cur.fetchone()
+        if (data is not None and check_password_hash(str(data[0]),OldPassword)):
+            return True
+        else:
+            return False
+
 
 # Returns all the messages posted at certain users wall
 # Parameters: 'email' (type: string)
