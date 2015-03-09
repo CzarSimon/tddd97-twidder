@@ -11,9 +11,13 @@ body {
 #logo {
 	width: 60%;
 	height: 360px;
-	margin-left: 20%;
-	background-image: url("static/images/logo2.png");
+	padding-top: -20%;
+	/*background-image: url("static/images/logo2.png");*/
 	background-position: center;
+}
+
+#main-logo{
+	margin-top: -20%;
 }
 
 #login-form, #signup-form {
