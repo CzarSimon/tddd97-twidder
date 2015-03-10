@@ -101,7 +101,7 @@ Parameters: 'email', 'newPassword', 'oldPassword' (type: string)
 Retruns: Dictionary consiting of 'success' (type: boolean), 'message' (type: string)
 """
 def __checkNewPassword(email, newPassword, oldPassword):
-	if (oldPassword == db.get_current_password(email)):
+	if (db.compare_password(email,oldPassword)):
 		if (len(newPassword) > 4):
 			return {'success': True, 
 					'message': 'New passwod accepted'}

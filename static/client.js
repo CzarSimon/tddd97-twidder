@@ -89,7 +89,7 @@ signupClick = function() {
 		if (errorMessage == "nothing") {
 			signup.style.display = 'none';
 			login.style.display = 'block';
-			checkSignUpForm();
+			signUp();
 		}
 	}	
 }
@@ -127,6 +127,22 @@ loginClick = function(email, password) {
 	} else {
 		displayErrorMessage(user["message"]);
 	}
+}
+
+signUp = function(firstname,familyname,gender,city,country,email,password,repeatPassword) {
+	//var login = document.getElementsByClassName("login-form");
+	var signup = document.getElementsByClassName("signup-form");
+	firstname = firstname || signup[0].value;
+	familyname = familyname || signup[1].value;
+	gender = gender || signup[2].value;
+	city = city || signup[3].value;
+	country = country || signup[4].value;
+	email = email || signup[5].value;
+	password = password || signup[6].value;
+	repeatPassword = repeatPassword || signup[7].value;
+
+	var temp_form = "firstname=" + firstname + "&familyname=" + familyname + "&gender=" + gender + "&city=" + city + "&country=" + country + "&email=" + email + "&password=" + password + "&repeatPassword=" + repeatPassword
+	ajaxPost('sign-up',temp_form)
 }
 
 login = function(email, password) {
