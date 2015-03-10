@@ -94,6 +94,10 @@ signupClick = function() {
 	}	
 }
 
+function signUp() {
+
+}
+
 function checkSignUpForm() {
 
 	var formData = [];
@@ -130,16 +134,8 @@ login = function(email, password) {
 	email = email || login[0].value;
 	password = password || login[1].value
 
-	var temp_form = "email=" + email + "&password=" + password
-	ajaxPost('sign-in', temp_form)
-
-	var user = serverstub.signIn(email,password);
-	if (user["success"]) {
-		setMyToken(user["data"]);
-		displayView("profileview");	
-	} else {
-		displayErrorMessage(user["message"]);
-	}
+	signInServer(email,password);
+	displayView('profileview')
 }
 
 
@@ -378,6 +374,7 @@ function refreshClick() {
 }
 
 ajaxPost = function(route, form){
+	console.log(form)
 	var xmlhttp;
 	var response;
 	if (window.XMLHttpRequest){
@@ -387,12 +384,16 @@ ajaxPost = function(route, form){
 	}
 	xmlhttp.onreadystatechange = function(){
 		if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-			console.log(xmlhttp.responseText)
+			response = JSON.parse(xmlhttp.responseText);
+			console.log('first');
+			console.log(typeof(response));
+			console.log(xmlhttp.responseText);
 		}
 	}
-	xmlhttp.open("POST", route, true);
+	xmlhttp.open("POST", route, "true");
 	xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-	xmlhttp.send(form)
+	xmlhttp.send(form);
+	console.log(response);
 	return response
 }
 
