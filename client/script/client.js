@@ -82,7 +82,7 @@ signupClick = function() {
 			errorMessage = "Not the same as password";
 		}
 
-		//displayErrorMessage(errorMessage);
+		displayErrorMessage(errorMessage);
 		if (errorMessage == "nothing") {
 			signup.style.display = 'none';
 			login.style.display = 'block';
@@ -104,7 +104,7 @@ function checkSignUpForm() {
 	formData["email"] =  form[5].value; 
 	formData["password"] =  form[6].value; 
 	
-    alert(serverstub.signUp(formData)["message"]);
+    //alert(serverstub.signUp(formData)["message"]);
     loginClick(formData["email"],formData["password"]);
 }
 
