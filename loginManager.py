@@ -82,7 +82,9 @@ def __noMultipleSessons(token):
 		return True
 
 def __signUpValidation(email, password, repeatPassword):
-	if re.match(r"... ^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$ ...", email):
+	if database.get_user_data_by_email(email) is not None:
+		return {'success': False, 'message': 'User already exists'}
+	elif re.match(r"... ^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$ ...", email):
 		return {'success': False, 'message': 'Invalid email'}
 	elif (len(password) < 5):
 		return {'success': False, 'message': 'Password must be at least 5 characters long'}

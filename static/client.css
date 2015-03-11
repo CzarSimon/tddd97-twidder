@@ -51,11 +51,9 @@ body {
 
 #error-box {
 	width: 100%;
-	border-style: solid;
-	border-width: 1px;
-	border-color: #ff5500;
 	margin-bottom: 4%;
-	background-color: rgba(200,200,200,0.6);
+	margin-left: -1%;
+	background-color: #E8EAF6;
 }
 
 #login-button {
