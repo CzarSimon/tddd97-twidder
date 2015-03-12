@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, session
-import os, loginManager, sessionFunctions
+import os, loginManager, sessionFunctions, json
 
 
 app = Flask(__name__, static_url_path='/static') 
@@ -15,6 +15,7 @@ def runClient():
 # Route for logging in, calls the signIn functions in the loginManager module.
 @app.route("/sign-in", methods=["POST","GET"])
 def signIn():
+	print('signing in')
 	email = request.form['email']
 	password = request.form['password']
 	return loginManager.signIn(email,password)
@@ -40,9 +41,10 @@ def signOut():
 
 @app.route('/clear-session', methods=['POST', 'GET'])
 def clearSesison():
-	return session.clear()
+	session.clear()
+	return 'fuck you'
 
-@app.route('/get-sessions', methods=['POST','GET'])
+@app.route('/get-session', methods=['POST','GET'])
 def getSession():
 	print session
 	return 'See terminal for sessoins'

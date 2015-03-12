@@ -5,19 +5,28 @@ var sendPost = function(method, route, form, callback) {
 	} else {
 		xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
 	}
-	xmlhttp.open(method, route, "true");
-	xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 	xmlhttp.onreadystatechange = function(){
 		if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-			callback(JSON.parse(xmlhttp.responseText));
+			console.log(JSON.parse(xmlhttp.responseText));
+			callback.call(JSON.parse(xmlhttp.responseText));
 		}
-	}
-	return (xmlhttp.send(form))
+	}	
+	xmlhttp.open(method, route, "true");
+	xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+	xmlhttp.send(form)
 }
 
 signInServer = function(email, password) {
 	var form = "email=" + email + "&password=" + password;
-	sendPost('POST', 'sign-in', form, console.log.bind(console))
+	sendPost('POST', 'sign-in', form, function(response) {
+		console.log(typeof(this))
+		if (this.success == true) {
+			console.log(this.message);
+			setMyToken(this.data);
+			displayView('profileview');
+		} else {
+			console.log(this.message);
+			displayErrorMessage(this.message);
+		}
+	});
 }
-
-

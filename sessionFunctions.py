@@ -21,6 +21,12 @@ def changePassword(token, oldPassword, newPassword):
 									'message': 'Not logged in'})
 	return returnData
 
+def sendSession():
+	if len(session)==1:
+		print(session[0])
+	elif len(session)==0:
+		print('Not logged in')
+
 
 """ 
 Get the logged in users email and calls getUserDataByToken

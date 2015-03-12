@@ -2,6 +2,7 @@ var root_url = "http//:127.0.0.1:5000/"
 
 
 displayView = function(currentView){
+	console.log('i have been called')
 	$('body').html(document.getElementById(currentView).text);
 	setViewStyle(currentView);
 	//$('body').css('background-size', '110% 130%')
@@ -141,8 +142,8 @@ signUp = function(firstname,familyname,gender,city,country,email,password,repeat
 	password = password || signup[6].value;
 	repeatPassword = repeatPassword || signup[7].value;
 
-	var temp_form = "firstname=" + firstname + "&familyname=" + familyname + "&gender=" + gender + "&city=" + city + "&country=" + country + "&email=" + email + "&password=" + password + "&repeatPassword=" + repeatPassword
-	ajaxPost('sign-up',temp_form)
+	var form = "firstname=" + firstname + "&familyname=" + familyname + "&gender=" + gender + "&city=" + city + "&country=" + country + "&email=" + email + "&password=" + password + "&repeatPassword=" + repeatPassword
+	ajaxPost('sign-up',form)
 }
 
 login = function(email, password) {
@@ -151,7 +152,6 @@ login = function(email, password) {
 	password = password || login[1].value
 
 	signInServer(email,password);
-	displayView('profileview')
 }
 
 
@@ -388,29 +388,3 @@ function refreshClick() {
 		}
 	}
 }
-
-ajaxPost = function(route, form){
-	console.log(form)
-	var xmlhttp;
-	var response;
-	if (window.XMLHttpRequest){
-		xmlhttp = new XMLHttpRequest();
-	} else {
-		xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-	}
-	xmlhttp.onreadystatechange = function(){
-		if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-			response = JSON.parse(xmlhttp.responseText);
-			console.log('first');
-			console.log(typeof(response));
-			console.log(xmlhttp.responseText);
-		}
-	}
-	xmlhttp.open("POST", route, "true");
-	xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-	xmlhttp.send(form);
-	console.log(response);
-	return response
-}
-
-

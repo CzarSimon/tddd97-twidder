@@ -73,6 +73,7 @@ def change_password(email, new_password):
 # Returns: 'data' (type: list)
 
 def get_user_data_by_email(email):
+    
     with con:
         cur = con.cursor()
         cur.execute('SELECT * FROM users WHERE email = ?',(email,))
