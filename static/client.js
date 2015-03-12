@@ -276,15 +276,15 @@ function generateWall(token) {
 
 function getNewMessage() {
 	var message = document.getElementById("new-message").value;
-	var token = getMyToken();
+	var toMail = ""
 	if (localStorage.getItem('onPage') != 'mine') {
-		var toMail = localStorage.getItem('onPage');
-		serverstub.postMessage(token, message,toMail);
-		generateGuestWall(toMail);
+		toMail = localStorage.getItem('onPage');
+		//generateGuestWall(toMail);
 	} else {
-		serverstub.postMessage(token, message);
-		generateWall(token);
+		toMail = 'my email';
+		//generateWall(token);
 	}
+	messageToServer(getMyToken(), toMail, message);
 
 	document.getElementById("new-message").value = "";
 	document.getElementById("new-message").blur();

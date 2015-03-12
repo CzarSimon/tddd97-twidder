@@ -21,13 +21,6 @@ def changePassword(token, oldPassword, newPassword):
 									'message': 'Not logged in'})
 	return returnData
 
-def sendSession():
-	if len(session)==1:
-		print(session[0])
-	elif len(session)==0:
-		print('Not logged in')
-
-
 """ 
 Get the logged in users email and calls getUserDataByToken
 Parameters: 'token' (type: 'string')
@@ -85,6 +78,11 @@ Reurtns: JSON object consisting of 'success' (type: boolean), 'message' (type: s
 """
 def postMessage(token, email, message):
 	if token in session:
+		if (email == 'my email'):
+			email = session[token]
+		else:
+			pass
+
 		if db.get_user_data_by_email(email) is not None:
 			db.post_message(session[token], message, email) # session[token] is the email of the logged in user 
 			return json.dumps({	'success': True,
