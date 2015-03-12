@@ -38,9 +38,9 @@ def signUp(email, password, repeatPassword, firstname, familyname, gender, city,
 def signOut(token):
 	if token in session:
 		session.pop(token) # Removes the logged in users session.
-		return {"success": True, "message": "Successfully signed out."}
+		return json.dumps({"success": True, "message": "Successfully signed out."})
 	else:
-		return {"success": False, "message": "You are not signed in."}
+		return json.dumps({"success": False, "message": "You are not signed in."})
 
 # Initialises a new database. 
 def startNewDatabase():

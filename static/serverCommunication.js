@@ -30,3 +30,14 @@ signInServer = function(email, password) {
 		}
 	});
 }
+
+signOutServer = function(token) {
+	var form = "token=" + token;
+	sendPost('POST', 'sign-out', form, function(response) {
+		console.log(this.message);
+		if (this.success) {
+			setMyToken('logged out');
+			displayView("welcomeview");
+		}
+	});
+}

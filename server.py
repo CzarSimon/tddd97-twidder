@@ -35,7 +35,7 @@ def signUp():
 @app.route("/sign-out", methods=["POST"])
 def signOut():
 	token = request.form['token']
-	return loginManager.signOut(token)['message']
+	return loginManager.signOut(token)
 
 # ----- End of login routes -----
 

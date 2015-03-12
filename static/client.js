@@ -2,7 +2,6 @@ var root_url = "http//:127.0.0.1:5000/"
 
 
 displayView = function(currentView){
-	console.log('i have been called')
 	$('body').html(document.getElementById(currentView).text);
 	setViewStyle(currentView);
 	//$('body').css('background-size', '110% 130%')
@@ -202,9 +201,7 @@ checkUsers = function(user) {
 }
 
 logoutClick = function() {
-	console.log(serverstub.signOut(getMyToken())["message"]);
-	setMyToken("logged out");
-	displayView("welcomeview");	
+	signOutServer(getMyToken());
 }
 
 function exitOtherMembersPage() {
