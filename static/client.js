@@ -253,16 +253,19 @@ function newMessages(oldLength,messages) {
 	return newContent;
 }
 
+
+
 function generateGuestWall(email) {
-	var messages = serverstub.getUserMessagesByEmail(getMyToken(),email);
-	var newContent = newMessages(0, messages.data);
-	document.getElementById("content").innerHTML = newContent;
+	//var messages = serverstub.getUserMessagesByEmail(getMyToken(),email);
+	//var newContent = newMessages(0, messages.data);
+	//document.getElementById("content").innerHTML = newContent;
 	menuSelector("wall-li");
 }
 
 function generateWall(token) {
 	var oldWallLength = document.getElementsByClassName("content-box message-box").length;
-	var messages = serverstub.getUserMessagesByToken(token).data;
+	console.log(oldWallLength);
+	/*var messages = serverstub.getUserMessagesByToken(token).data;
 	var newContent = newMessages(oldWallLength,messages);
 
 	var content = document.getElementById("content");
@@ -271,7 +274,7 @@ function generateWall(token) {
 		content.innerHTML = newContent + content.innerHTML;	
 	} else {
 		content.innerHTML = newContent;
-	}	
+	}*/	
 }
 
 function getNewMessage() {
