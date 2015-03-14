@@ -139,7 +139,8 @@ websocketfunction = function() {
 	new_uri += loc.pathname + "sign-in";
 	var ws = new WebSocket(new_uri);
 	ws.onmessage = function(response){
-		if (response.data === 'logged out') {
+		console.log(response.data);
+		if (response.data == getMyToken()) {
 			console.log('Utloggad!')
 			logoutClick();
 		}

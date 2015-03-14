@@ -31,9 +31,9 @@ def signIn():
 		while True:			
 			userToken = ws.receive()
 			email = sessionFunctions.getSessionEmail(userToken)
-			user_connection = {'email': email, 'conn': ws}
+			user_connection = {'email': email, 'conn': ws, 'token': userToken}
 			global ConnectedUsers 
-			logoutUser(user_connection['email'])
+			logoutUserWebSocket(user_connection['email'])
 			ConnectedUsers.append(user_connection)
 			
 	return
@@ -131,11 +131,19 @@ def getUserToken():
 
 	return token
 
-def logoutUser(email):
+def logoutUserWebSocket(email):
+	global ConnectedUsers
 	for item in ConnectedUsers:	
 		if (item['email'] == email):
 			connection = item['conn']
-			connection.send('logged out')
+			connection.send(item['token'])
+			ConnectedUsers.remove(item)
+	return ''
+
+def logoutUserClick(email):
+	global ConnectedUsers
+	for item in ConnectedUsers:
+		if (item['email'] == email):
 			ConnectedUsers.remove(item)
 	return ''
 
