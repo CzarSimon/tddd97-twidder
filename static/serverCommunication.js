@@ -43,13 +43,26 @@ signOutServer = function(token) {
 }
 
 messageToServer = function(token, email, message) {
+	console.log('in messageToServer');
 	var form = "token=" + token + "&email=" + email + "&message=" + message;
 	sendPost('POST', 'post-message', form, function(response) {
 		console.log(this.message);
 		if (email == "my email") {
-			generateWall(token);
+			getMessagesFromServer(token);
 		} else {
 			generateGuestWall(email);
+		}
+	});
+}
+
+getMessagesFromServer = function(token) {
+	console.log('in getMessagesFromServer');
+	var form = "token=" + token;
+	sendPost('POST', 'my-wall', form, function(response) {
+		console.log(this.success)
+		if (this.success) {
+			messages = this.data
+			generateWall(messages);
 		}
 	});
 }

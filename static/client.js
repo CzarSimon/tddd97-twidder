@@ -216,9 +216,11 @@ function searchClick() {
 }
 
 function wallClick() {
+	console.log('wallClick')
 	menuSelector("wall-li");
 	exitOtherMembersPage();
-	generateWall(getMyToken());
+	getMessagesFromServer(getMyToken());
+	//generateWall(getMyToken());
 }
 
 function aboutClick() {
@@ -237,17 +239,18 @@ function menuSelector(listId) {
 }
 
 function newMessages(oldLength,messages) {
+	console.log('in newMessages')
 	var length = messages.length - oldLength;
 	var newContent = '';
 	var clickInstructions = ""; 
 	var author = "";
 
 	for (var i = 1; i < length + 1; i++) {
-		author = '"' + messages[length - i].writer + '"';
+		author = '"' + messages[length - i].sender + '"';
 		clickInstructions = "return searchUser(" + author + ")" + "'";
 		newContent = '<div class="content-box message-box"><p>'
-		 + messages[length - i].content
-		 + "</p><p><a class='author' href='' onClick='" + clickInstructions + ">" + messages[length - i].writer 
+		 + messages[length - i].message
+		 + "</p><p><a class='author' href='' onClick='" + clickInstructions + ">" + messages[length - i].sender 
 		 + "</a></p></div>" + newContent;
 	}
 	return newContent;
@@ -262,10 +265,10 @@ function generateGuestWall(email) {
 	menuSelector("wall-li");
 }
 
-function generateWall(token) {
+function generateWall(messages) {
+	console.log('in generateWall')
 	var oldWallLength = document.getElementsByClassName("content-box message-box").length;
-	console.log(oldWallLength);
-	/*var messages = serverstub.getUserMessagesByToken(token).data;
+	console.log(oldWallLength);	
 	var newContent = newMessages(oldWallLength,messages);
 
 	var content = document.getElementById("content");
@@ -274,7 +277,7 @@ function generateWall(token) {
 		content.innerHTML = newContent + content.innerHTML;	
 	} else {
 		content.innerHTML = newContent;
-	}*/	
+	}
 }
 
 function getNewMessage() {

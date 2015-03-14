@@ -84,9 +84,13 @@ def postMessage(token, email, message):
 			pass
 
 		if db.get_user_data_by_email(email) is not None:
-			db.post_message(session[token], message, email) # session[token] is the email of the logged in user 
-			return json.dumps({	'success': True,
-								'message': 'Message posted'})
+			if len(message) > 50:
+				return json.dumps({	'success': False,
+									'message': 'Message must be 50 characters or shorter.'})				
+			else:
+				db.post_message(session[token], message, email) # session[token] is the email of the logged in user 
+				return json.dumps({	'success': True,
+									'message': 'Message posted'})
 		else:
 			return json.dumps({ 'success': False,
 								'message': 'No such user'})
