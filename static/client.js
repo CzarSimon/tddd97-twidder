@@ -167,15 +167,15 @@ localTokenToStorage = function() {
 }
 
 function myProfile() {
+	console.log('in myProfile')
 	exitOtherMembersPage();
-	checkUsers(serverstub.getUserDataByToken(getMyToken())["data"]);
+	getUserFromServer(getMyToken());
 }
 
-checkUsers = function(user) {
-	var userInfo = ""
-	var loggedInUser = serverstub.getUserDataByToken(getMyToken())["data"];
-	if (user.email == loggedInUser.email) {
- 		user = loggedInUser;
+checkUsers = function(user,email) {
+	console.log('in checkUsers')
+	var userInfo = "";
+	if (email == null) {
  		userInfo = "<div id='change-password'>\
  			<input type='password' class='change-password' placeholder='Old password' style='display: none'></input>\
  			<input type='password' class='change-password' placeholder='New password' style='display: none'></input>\
@@ -255,8 +255,6 @@ function newMessages(oldLength,messages) {
 	}
 	return newContent;
 }
-
-
 
 function generateGuestWall(email) {
 	//var messages = serverstub.getUserMessagesByEmail(getMyToken(),email);
@@ -347,7 +345,30 @@ function closeSearch() {
 	document.getElementById("search-blur").style.display = 'none';
 }
 
+function displayChangePasswordResult(result) {
+	console.log('in displayChangePasswordResult')
+	console.log(result.message);
+	var password = document.getElementsByClassName("change-password");
+	var button = document.getElementById("password-button");
+
+	if (result.success) {
+		password[0].value = "";			
+		password[1].value = "";
+		password[0].style.display = 'none';
+		password[1].style.display = 'none';
+		button.style.marginTop = '30%';
+		button.blur();	
+	} else {
+		password[0].setAttribute('type','text');
+		failedSearch(password[0],result.message);
+		password[1].value = "";
+		password[0].focus(); 
+	}
+	console.log(result.message);
+}
+
 function changePassword() {
+	console.log('in changePassword')
 	var password = document.getElementsByClassName("change-password");
 	var button = document.getElementById("password-button");
 
@@ -357,26 +378,9 @@ function changePassword() {
 		button.style.marginTop = '2.1em';
 		password[0].focus();	
 	} else {
-		var result = {"success": false, "message": "New password was to short"};
-		if (password[1].value.length > 4) {
-			result = serverstub.changePassword(getMyToken(),password[0].value,password[1].value);
-		}
-		if (result["success"]) {
-			password[0].value = "";			
-			password[1].value = "";
-			password[0].style.display = 'none';
-			password[1].style.display = 'none';
-			button.style.marginTop = '30%';
-			button.blur();	
-		} else {
-			password[0].setAttribute('type','text');
-			failedSearch(password[0],result.message);
-			password[1].value = "";
-			password[0].focus(); 
-		}
-		console.log(result.message);
+		console.log(password[0].value + ' ' + password[1].value)
+		changePasswordThruServer(getMyToken(),password[0].value,password[1].value);
 	}
-
 	return false;
 }
 

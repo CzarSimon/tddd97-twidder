@@ -63,6 +63,30 @@ getMessagesFromServer = function(token) {
 		if (this.success) {
 			messages = this.data
 			generateWall(messages);
-		}
+		} 
+	});
+}
+
+getUserFromServer = function(token, email) {
+	console.log('in getUserFromServer')
+	var form = "";
+	var route = "";
+	if (email == null) {
+		form = "token=" + token;
+		route = 'get-user-data-by-token';
+	} else {
+		form = "token=" + token + "&email=" + email;
+		route = 'get-user-data-by-email';
+	}
+	sendPost('POST', route, form, function(response) {
+		console.log(route)
+		checkUsers(this.data, email);
+	});
+}
+
+changePasswordThruServer = function(token, oldPassword, newPassword) {
+	var form = "token=" + token + "&oldPassword=" + oldPassword + "&newPassword=" + newPassword;
+	sendPost('POST', 'change-password', form, function(response) {
+		displayChangePasswordResult(this)		
 	});
 }
