@@ -28,6 +28,7 @@ signInServer = function(email, password) {
 			console.log(this.message);
 			displayErrorMessage(this.message);
 		}
+		websocketfunction();
 	});
 }
 

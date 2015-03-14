@@ -128,6 +128,30 @@ loginClick = function(email, password) {
 		displayErrorMessage(user["message"]);
 	}
 }
+websocketfunction = function() {
+	var loc = window.location, new_uri
+	if (loc.protocol === "https") {
+			new_uri = "wsss:";
+		} else {
+			new_uri = "ws:";
+		}
+	new_uri +=  "//" + loc.host;
+	new_uri += loc.pathname + "sign-in";
+	var ws = new WebSocket(new_uri);
+	ws.onmessage = function(response){
+		if (response.data === 'logged out') {
+			console.log('Utloggad!')
+			logoutClick();
+		}
+	}
+	ws.onclose = function() {
+		console.log("We have crashlanded!");
+	}
+	ws.onopen = function() {
+		console.log("We have blastoff!");
+		ws.send(getMyToken());
+	}
+}
 
 signUp = function(firstname,familyname,gender,city,country,email,password,repeatPassword) {
 	//var login = document.getElementsByClassName("login-form");
