@@ -1,12 +1,13 @@
 body {
 	margin: 0px 0px 0px 0px;
+	font-family: Georgia;
 }
 
-.welcome {
+/*.welcome {
 	width: 600px;
 	height: 400px;
 	margin: 50px auto;
-}
+}*/
 
 #logo {
 	width: 60%;
@@ -17,16 +18,15 @@ body {
 }
 
 #main-logo{
-	margin-top: -20%;
 }
 
-#login-form, #signup-form {
+/*#login-form, #signup-form {
 	padding-left: 2%;
-}
+}*/
 
 .login-form, .signup-form {
-	width: 46%;
-	margin: 2% 1% 2% 1%;
+	/*width: 46%;*/
+	margin: 2% 0% 2% 0%;
 	border-style: solid;
 	border-width: 0px;
 	border-left-width: 2px;
@@ -40,13 +40,12 @@ body {
 }
 
 .login {
-	width: 100%;
-	margin-top: 3%;
+	/*width: 100%;*/
+	margin-top: -5%;
 	margin-bottom: 5%;
 	overflow: auto;
 	background-color: #E8EAF6;
 	box-shadow: 0px 0px 3px #989898;
-	padding-left: 0.4%;
 }
 
 #error-box {
@@ -56,12 +55,9 @@ body {
 	background-color: #E8EAF6;
 }
 
-#login-button {
-	margin-left: 3%;
-}
-.myBtn {
-	width: 45.5%;
-	margin: 2% 1% 2% 1%;
+.myBtn { 
+	margin-top: 2%;
+	margin-bottom: 2%;
 	color: rgb(224,84,0);
 	height: 2em;
 	font-size: 1.1em;
@@ -79,6 +75,7 @@ body {
 
 h1 {
 	color: #dd5500;
+	font-family: Helvetica !important;
 }
 
 #side-menu {
