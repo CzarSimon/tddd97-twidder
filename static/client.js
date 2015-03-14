@@ -128,6 +128,7 @@ loginClick = function(email, password) {
 		displayErrorMessage(user["message"]);
 	}
 }
+
 websocketfunction = function() {
 	var loc = window.location, new_uri
 	if (loc.protocol === "https") {
@@ -240,12 +241,11 @@ function searchClick() {
 	document.getElementById('search-bar').focus();
 }
 
-function wallClick() {
+function wallClick(email) {
 	console.log('wallClick')
 	menuSelector("wall-li");
 	exitOtherMembersPage();
-	getMessagesFromServer(getMyToken());
-	//generateWall(getMyToken());
+	getMessagesFromServer(getMyToken(), 'my wall');	
 }
 
 function aboutClick() {
@@ -282,18 +282,18 @@ function newMessages(oldLength,messages) {
 }
 
 function generateGuestWall(email) {
-	//var messages = serverstub.getUserMessagesByEmail(getMyToken(),email);
-	//var newContent = newMessages(0, messages.data);
-	//document.getElementById("content").innerHTML = newContent;
 	menuSelector("wall-li");
+	getMessagesFromServer(getMyToken(), email);
 }
 
-function generateWall(messages) {
+function generateWall(messages, otherWall) {
 	console.log('in generateWall')
-	var oldWallLength = document.getElementsByClassName("content-box message-box").length;
-	console.log(oldWallLength);	
-	var newContent = newMessages(oldWallLength,messages);
+	var oldWallLength = 0;
+	if (!otherWall) {
+		oldWallLength = document.getElementsByClassName("content-box message-box").length;
+	}
 
+	var newContent = newMessages(oldWallLength,messages);
 	var content = document.getElementById("content");
 
 	if (oldWallLength > 0) {
@@ -328,26 +328,13 @@ function printSearchOptions(match) {
 }
 
 function searchUser(clickedSearch) {
-	if (clickedSearch == serverstub.getUserDataByToken(getMyToken()).data.email) {
-		document.getElementById("search-bar").value = clickedSearch;
-		clickedSearch = null;
-		exitOtherMembersPage();
-	}
+	console.log('in searchUser');
+	exitOtherMembersPage();
 	var searchField = document.getElementById("search-bar");
 	if (clickedSearch == null) {
-		console.log('inside null');
-		var match = serverstub.getUserDataByEmail(getMyToken(), searchField.value);
-
-		if (match.success) {
-			//searchField.value = match.data["firstname"] + " " + match.data["familyname"];	
-			checkUsers(match.data);
-			closeSearch();
-		} else {
-			failedSearch(searchField, match.message);
-		}
+		getUserFromServer(getMyToken(), searchField.value)
 	} else {
-		var match = serverstub.getUserDataByEmail(getMyToken(), clickedSearch);
-		checkUsers(match.data);
+		getUserFromServer(getMyToken(), clickedSearch);
 	}
 	return false;
 }
@@ -360,7 +347,7 @@ function failedSearch(field,message) {
 	setTimeout(function(){
 		field.value = '';
 		field.style.color = color;
-	},600);
+	},800);
 }
 
 function closeSearch() {	

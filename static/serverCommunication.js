@@ -56,14 +56,24 @@ messageToServer = function(token, email, message) {
 	});
 }
 
-getMessagesFromServer = function(token) {
+getMessagesFromServer = function(token, email) {
 	console.log('in getMessagesFromServer');
-	var form = "token=" + token;
-	sendPost('POST', 'my-wall', form, function(response) {
+	var form = "";
+	var route = "";
+	var otherWall = "";
+	if (email == 'my wall') {
+		form = "token=" + token;
+		route = "my-wall";
+		otherWall = false
+	} else {
+		form = "token=" + token "&email=" + email;
+		route = "other-wall";
+		otherWall = true
+	}
+	sendPost('POST', route, form, function(response) {
 		console.log(this.success)
 		if (this.success) {
-			messages = this.data
-			generateWall(messages);
+			generateWall(this.data, otherWall);
 		} 
 	});
 }
@@ -81,7 +91,13 @@ getUserFromServer = function(token, email) {
 	}
 	sendPost('POST', route, form, function(response) {
 		console.log(route)
-		checkUsers(this.data, email);
+		if (this.success) {
+			checkUsers(this.data, email);
+			closeSearch();	
+		} else {
+			var searchField = document.getElementById("search-bar");
+			failedSearch(searchField, this.message);
+		}
 	});
 }
 
@@ -91,3 +107,4 @@ changePasswordThruServer = function(token, oldPassword, newPassword) {
 		displayChangePasswordResult(this)		
 	});
 }
+
