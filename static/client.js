@@ -95,7 +95,9 @@ signupClick = function() {
 }
 
 function signUp() {
-
+	console.log('in signUp')
+	var form = document.getElementsByClassName("signup-form");
+	signUpServer(form[0].value, form[1].value, form[2].value, form[3].value, form[4].value, form[5].value, form[6].value, form[7].value)
 }
 
 function checkSignUpForm() {
@@ -153,22 +155,6 @@ websocketfunction = function() {
 		console.log("We have blastoff!");
 		ws.send(getMyToken());
 	}
-}
-
-signUp = function(firstname,familyname,gender,city,country,email,password,repeatPassword) {
-	//var login = document.getElementsByClassName("login-form");
-	var signup = document.getElementsByClassName("signup-form");
-	firstname = firstname || signup[0].value;
-	familyname = familyname || signup[1].value;
-	gender = gender || signup[2].value;
-	city = city || signup[3].value;
-	country = country || signup[4].value;
-	email = email || signup[5].value;
-	password = password || signup[6].value;
-	repeatPassword = repeatPassword || signup[7].value;
-
-	var form = "firstname=" + firstname + "&familyname=" + familyname + "&gender=" + gender + "&city=" + city + "&country=" + country + "&email=" + email + "&password=" + password + "&repeatPassword=" + repeatPassword
-	ajaxPost('sign-up',form)
 }
 
 login = function(email, password) {
@@ -282,14 +268,16 @@ function newMessages(oldLength,messages) {
 }
 
 function generateGuestWall(email) {
+	console.log('in generateGuestWall')
 	menuSelector("wall-li");
+	console.log(email)
 	getMessagesFromServer(getMyToken(), email);
 }
 
 function generateWall(messages, otherWall) {
 	console.log('in generateWall')
 	var oldWallLength = 0;
-	if (!otherWall) {
+	if (!otherWall || localStorage.getItem('onPage') != 'mine') {
 		oldWallLength = document.getElementsByClassName("content-box message-box").length;
 	}
 
@@ -397,10 +385,11 @@ function changePassword() {
 }
 
 function refreshClick() {
+	console.log('in refreshClick')
 	if (document.getElementById('wall-li').style.borderRightWidth == '8px') {
 		var onPage = localStorage.getItem('onPage');
 		if (onPage == 'mine') {
-			generateWall(getMyToken());
+			wallClick();
 		} else {
 			generateGuestWall(onPage);
 			console.log('Refreshed');

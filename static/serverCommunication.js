@@ -61,12 +61,12 @@ getMessagesFromServer = function(token, email) {
 	var form = "";
 	var route = "";
 	var otherWall = "";
-	if (email == 'my wall') {
+	if (email == 'my wall' || email == null) {
 		form = "token=" + token;
 		route = "my-wall";
 		otherWall = false
 	} else {
-		form = "token=" + token "&email=" + email;
+		form = "token=" + token + "&email=" + email;
 		route = "other-wall";
 		otherWall = true
 	}
@@ -108,3 +108,12 @@ changePasswordThruServer = function(token, oldPassword, newPassword) {
 	});
 }
 
+signUpServer = function(firstname, familyname, gender, city, country, email, password, repeatPassword) {
+	console.log('in signUpServer')
+	var form = "email=" + email + "&password=" + password + "&repeatPassword=" + repeatPassword + "&firstname=" + firstname + "&familyname=" + familyname + "&gender=" + gender + "&city=" + city + "&country=" + country;
+	sendPost('POST', 'sign-up', form, function(response) {
+		if (this.success) {
+			signInServer(email, password);
+		}
+	});
+}

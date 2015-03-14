@@ -29,7 +29,7 @@ def signUp(email, password, repeatPassword, firstname, familyname, gender, city,
 		# Adds the user info to the database.
 		database.sign_up(email, password, firstname, familyname, gender, city, country) 
 		# Logs in the user
-		signIn(email, password)
+		#signIn(email, password)
 	return json.dumps(validInfo)
 
 # Checks if the user is logged in and signs them out if true.
