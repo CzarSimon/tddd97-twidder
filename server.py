@@ -1,9 +1,15 @@
 from flask import Flask, render_template, request, session
 import os, loginManager, sessionFunctions, json
+from gevent.wsgi import WSGIServer
+from gevent.pywsgi import WSGIServer
+from geventwebsocket.handler import WebSocketHandler
+from geventwebsocket import WebSocketServer, WebSocketApplication, Resource
 
 
 app = Flask(__name__, static_url_path='/static') 
 app.secret_key = 'SWNGh6pY5LRy7zka82c5OUFyAkbxU5AwB2V5'
+ConnectedUsers = []
+
 
 
 @app.route("/", methods=['POST', 'GET'])
@@ -15,10 +21,22 @@ def runClient():
 # Route for logging in, calls the signIn functions in the loginManager module.
 @app.route("/sign-in", methods=["POST","GET"])
 def signIn():
-	print('signing in')
-	email = request.form['email']
-	password = request.form['password']
-	return loginManager.signIn(email,password)
+	if request.method == 'POST':
+		email = request.form['email']
+		password = request.form['password']
+		return loginManager.signIn(email,password)
+
+	if request.environ.get('wsgi.websocket'):		
+		ws = request.environ['wsgi.websocket']
+		while True:			
+			userToken = ws.receive()
+			email = sessionFunctions.getSessionEmail(userToken)
+			user_connection = {'email': email, 'conn': ws, 'token': userToken}
+			global ConnectedUsers 
+			logoutUserWebSocket(user_connection['email'])
+			ConnectedUsers.append(user_connection)
+			
+	return
 
 @app.route("/sign-up", methods=["POST"])
 def signUp():
@@ -113,6 +131,24 @@ def getUserToken():
 
 	return token
 
+def logoutUserWebSocket(email):
+	global ConnectedUsers
+	for item in ConnectedUsers:	
+		if (item['email'] == email):
+			connection = item['conn']
+			connection.send(item['token'])
+			ConnectedUsers.remove(item)
+	return ''
+
+def logoutUserClick(email):
+	global ConnectedUsers
+	for item in ConnectedUsers:
+		if (item['email'] == email):
+			ConnectedUsers.remove(item)
+	return ''
+
+
 if __name__ == "__main__":
-	app.debug = True
-	app.run()
+	http_server = WSGIServer(('',5000), app, handler_class=WebSocketHandler)
+	http_server.serve_forever()
+	#app.debug = True

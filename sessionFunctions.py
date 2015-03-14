@@ -57,6 +57,10 @@ def getUserMessagesByToken(token):
 	email = session[token]
 	return getUserMessagesByEmail(token, email)
 
+
+def getSessionEmail(token):
+	return session[token]
+
 """
 """
 def getUserMessagesByEmail(token, email):
