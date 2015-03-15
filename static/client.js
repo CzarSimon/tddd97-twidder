@@ -15,10 +15,29 @@ function setViewStyle(view) {
 	} else if (view == "profileview") {
 		//bod.backgroundImage = '';
 		bod.backgroundColor = '#E8EAF6';
-		document.getElementById("side-menu").style.height = window.innerHeight + 'px';
+		if (document.getElementById("side-menu").style.height < window.innerHeight) {
+			document.getElementById("side-menu").style.height = window.innerHeight + 'px';
+		}
 		wallClick();
 		//myProfile();
 		localStorage.setItem('onPage', 'mine');
+	}
+}
+
+$(window).resize(function(){
+	if (window.innerWidth < 768) {
+		var sideMenu = $('#side-menu');
+		sideMenu.hide();
+
+	} else {
+		var sideMenu = $('#side-menu');
+		sideMenu.show();
+	}
+})
+
+function toggleMenu() {
+	if (window.innerWidth < 768) {
+		$('#side-menu').toggle();
 	}
 }
 
@@ -188,7 +207,7 @@ checkUsers = function(user,email) {
 	console.log('in checkUsers')
 	var userInfo = "";
 	if (email == null) {
- 		userInfo = "<div id='change-password'>\
+ 		userInfo = "<div id='change-password' class='col-md-6 col-xs-12'>\
  			<input type='password' class='change-password' placeholder='Old password' style='display: none'></input>\
  			<input type='password' class='change-password' placeholder='New password' style='display: none'></input>\
  		<button id='password-button' class='info-button' onClick='return changePassword()'>Change password</button></div>"
@@ -197,11 +216,11 @@ checkUsers = function(user,email) {
 		var toWall = '"' + user.email + '"';
 		var clickInstructions = "return generateGuestWall(" + toWall + ")" + "'";
 		document.getElementById("new-message").placeholder = "Give " + user.firstname + " a pieace of your mind, bro!";
-		userInfo = "<div id='change-password'>\
+		userInfo = "<div id='change-password' class='col-md-6 col-xs-12'>\
 		<button class='info-button' onClick='" + clickInstructions + ">Check out that wall</button></div>"
 	}
 
-	userInfo = "<div class='content-box profile-box'><div id='user-info'>\
+	userInfo = "<div class='content-box profile-box col-md-10 col-md-offset-1'><div id='user-info' class='col-md-6 col-xs-12'>\
 				<p>Name: &nbsp &nbsp" + user["firstname"] + " " + user["familyname"] + "</p>\
 				<p>Email: &nbsp &nbsp" + user["email"] + "</p>\
 				<p>Gender: &nbsp" + user["gender"] + "</p>\
@@ -259,7 +278,7 @@ function newMessages(oldLength,messages) {
 	for (var i = 1; i < length + 1; i++) {
 		author = '"' + messages[length - i].sender + '"';
 		clickInstructions = "return searchUser(" + author + ")" + "'";
-		newContent = '<div class="content-box message-box"><p>'
+		newContent = '<div class="content-box message-box col-md-3 col-sm-11 col-xs-11"><p class="message-text">'
 		 + messages[length - i].message
 		 + "</p><p><a class='author' href='' onClick='" + clickInstructions + ">" + messages[length - i].sender 
 		 + "</a></p></div>" + newContent;

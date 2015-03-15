@@ -80,17 +80,24 @@ h1 {
 
 #side-menu {
 	border-style: none;
-	margin: 0% 0% 0% 0%;
-	width: 22%;
-	background-color: #212121;
-	clear: both;
+	/*margin: 0% 0% 0% 0%;
+	width: 22%;*/
+	padding: 0px;
+	/*clear: both;*/
 	float: left;
-	position: fixed;
+	background-color: #212121;
+}
+
+#left-side {
+	padding: 0px;
+}
+
+.profile {
+	padding: 0px;
 }
 
 #namespace {
 	height: 58px;
-	width: 100%;
 	background-color: #323232;
 }
 
@@ -105,8 +112,10 @@ h1 {
 
 #right-side {
 	float: right;
-	width: 78%;
+	/*width: 78%;*/
+	padding: 0px;
 	padding-bottom: 3%;
+
 }
 
 #refresh-img {
@@ -120,8 +129,8 @@ h1 {
 
 #top-bar {
 	height: 58px;
-	width: 100%;
-	background-color: #FFFFFF;	
+	background-color: #FFFFFF;
+	padding: 0px;	
 }
 
 #menu ul li {
@@ -151,25 +160,25 @@ h1 {
 }
 
 #content {
-	padding-left: 7%;
+	padding-left: 8%;
 }
 
 .content-box.profile-box {
 	padding: 2% 8% 2% 8%;
 	margin: 4% 10% 0% 7%;
-	width: 64%;
+	/*width: 64%;*/
 	font-size: 1.2em;
 	overflow: auto;
 }
 
 #user-info {
 	float: left;
-	width: 49%;
+	/*width: 49%;*/
 }
 
 #change-password {
 	float: left;
-	width: 51%;
+	/*width: 51%;*/
 }
 
 /*#password-button {
@@ -214,16 +223,20 @@ h1 {
 }
 
 .content-box.message-box {
-	width: 27%;
-	height: 120px;
+	/*width: 27%*/
+	height: 140px;
 	float: left;
-	margin: 4% 6% 0% 0%;
+	margin: 4% 8% 0% 0%;
 	text-align: center;
 }
 
 .content-box p {
-	padding-left: 10%;
-	padding-right: 10%;
+	padding-left: 8%;
+	padding-right: 8%;
+}
+
+.message-text {
+	padding-top: 10%;
 }
 
 #search-bar {
@@ -266,12 +279,13 @@ h1 {
 
 #new-message-form {
 	height: 100%;
+	padding: 0px;
 }
 
 #new-message {
-	height: 97%;
+	height: 100%;
+	padding: 0px;
 	border-style: none;
-	width: 91%;
 	text-indent: 5%;
 	font-size: 18px;
 	font-family: Georgia;	
@@ -282,4 +296,8 @@ h1 {
 	border-style: solid;
 	border-width: 0px 0px 1px 0px; 
 	border-color: rgba(221,85,00,0.7);
+}
+
+#message-icons {
+	padding: 0px;
 }
