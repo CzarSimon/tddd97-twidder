@@ -242,7 +242,9 @@ function exitOtherMembersPage() {
 
 function searchClick() {
 	menuSelector("search-li");
-	document.getElementById("search-blur").style.display = 'block';
+	var searchBlur = document.getElementById("search-blur");
+	searchBlur.style.height = window.innerHeight + 'px';
+	searchBlur.style.display = 'block';
 	document.getElementById('search-bar').focus();
 }
 
@@ -255,6 +257,7 @@ function wallClick(email) {
 
 function aboutClick() {
 	serverstub.postMessage(getMyToken(),'This is a message by the autoPoster');	
+	toggleMenu();
 }
 
 function menuSelector(listId) {
@@ -266,6 +269,7 @@ function menuSelector(listId) {
 		document.getElementById(listId).style.borderRightWidth = '8px';
 	}
 	localStorage.setItem("prevMenuClick", listId);
+	toggleMenu();
 }
 
 function newMessages(oldLength,messages) {
