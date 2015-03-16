@@ -6,7 +6,7 @@ from geventwebsocket.handler import WebSocketHandler
 from geventwebsocket import WebSocketServer, WebSocketApplication, Resource
 
 
-app = Flask(__name__, static_url_path='/static') 
+app = Flask(__name__, static_url_path='/static',template_folder='static') 
 app.secret_key = 'SWNGh6pY5LRy7zka82c5OUFyAkbxU5AwB2V5'
 ConnectedUsers = []
 
@@ -107,6 +107,22 @@ def postMessage():
 	return sessionFunctions.postMessage(token, email, message)
 
 # ----- End of 'session functions' -----
+
+# ----- Routes for refreshing the page -----
+
+@app.route('/wall', methods=['GET','POST'])
+def wall():
+	return render_template('client.html')
+
+@app.route('/profile', methods=['GET','POST'])
+def profile():
+	return render_template('client.html')
+
+@app.route('/search', methods=['GET','POST'])
+def search():
+	return render_template('client.html')
+
+
 
 
 @app.route('/init-db', methods=['POST','GET'])

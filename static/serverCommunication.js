@@ -17,6 +17,7 @@ var sendPost = function(method, route, form, callback) {
 }
 
 signInServer = function(email, password) {
+	//history.replaceState(null,'','/');
 	var form = "email=" + email + "&password=" + password;
 	sendPost('POST', 'sign-in', form, function(response) {
 		console.log(typeof(this))
@@ -24,19 +25,24 @@ signInServer = function(email, password) {
 			console.log(this.message);
 			setMyToken(this.data);
 			displayView('profileview');
+			websocketfunction();
+			history.pushState({},'','/profile');
 		} else {
 			console.log(this.message);
 			displayErrorMessage(this.message);
 		}
-		websocketfunction();
 	});
 }
 
 signOutServer = function(token) {
+	//history.replaceState(null,'','/');
 	var form = "token=" + token;
 	sendPost('POST', 'sign-out', form, function(response) {
 		console.log(this.message);
-		if (this.success) {
+		if (this.success) {			
+			localStorage.setItem('userEmail','');
+			localStorage.setItem('prevMenuClick','profile-li');
+			window.history.replaceState({},'','/');
 			setMyToken('logged out');
 			displayView("welcomeview");
 		}
@@ -44,6 +50,7 @@ signOutServer = function(token) {
 }
 
 messageToServer = function(token, email, message) {
+	//history.replaceState(null,'','/');
 	console.log('in messageToServer');
 	var form = "token=" + token + "&email=" + email + "&message=" + message;
 	sendPost('POST', 'post-message', form, function(response) {
@@ -57,6 +64,7 @@ messageToServer = function(token, email, message) {
 }
 
 getMessagesFromServer = function(token, email) {
+	//history.replaceState(null,'','/');
 	console.log('in getMessagesFromServer');
 	var form = "";
 	var route = "";
@@ -74,11 +82,19 @@ getMessagesFromServer = function(token, email) {
 		console.log(this.success)
 		if (this.success) {
 			generateWall(this.data, otherWall);
+			/*
+			if (email == 'my wall'){
+				history.pushState(null,'','wall/' + localStorage.getItem('userEmail'));
+			} else {
+				history.pushState(null,'','wall/' + email);
+			}
+			*/
 		} 
 	});
 }
 
 getUserFromServer = function(token, email) {
+	//history.replaceState(null,'','/');
 	console.log('in getUserFromServer')
 	var form = "";
 	var route = "";
@@ -92,6 +108,12 @@ getUserFromServer = function(token, email) {
 	sendPost('POST', route, form, function(response) {
 		console.log(route)
 		if (this.success) {
+			/*
+			if (route == 'get-user-data-by-email') {
+				history.pushState(null,'','search/' + this.data.email);
+			} else if (route == 'get-user-data-by-token'){
+				history.pushState(null,'','profile/' + this.data.email);
+			}*/
 			checkUsers(this.data, email);
 			closeSearch();	
 		} else {
@@ -102,6 +124,7 @@ getUserFromServer = function(token, email) {
 }
 
 changePasswordThruServer = function(token, oldPassword, newPassword) {
+	//history.replaceState(null,'','/');
 	var form = "token=" + token + "&oldPassword=" + oldPassword + "&newPassword=" + newPassword;
 	sendPost('POST', 'change-password', form, function(response) {
 		displayChangePasswordResult(this)		
@@ -110,6 +133,7 @@ changePasswordThruServer = function(token, oldPassword, newPassword) {
 
 signUpServer = function(firstname, familyname, gender, city, country, email, password, repeatPassword) {
 	console.log('in signUpServer')
+	//history.replaceState(null,'','/');
 	var form = "email=" + email + "&password=" + password + "&repeatPassword=" + repeatPassword + "&firstname=" + firstname + "&familyname=" + familyname + "&gender=" + gender + "&city=" + city + "&country=" + country;
 	sendPost('POST', 'sign-up', form, function(response) {
 		if (this.success) {

@@ -3,6 +3,14 @@ var root_url = "http//:127.0.0.1:5000/"
 
 displayView = function(currentView){
 	$('body').html(document.getElementById(currentView).text);
+	var view = localStorage.getItem('prevMenuClick');
+	if (view  == 'wall-li'){
+		wallClick();
+	} else if (view == 'profile-li') {
+		myProfile();
+	} else if (view == 'search-li') {
+		searchClick();
+	}
 	setViewStyle(currentView);
 	//$('body').css('background-size', '110% 130%')
 }
@@ -10,6 +18,7 @@ displayView = function(currentView){
 function setViewStyle(view) {
 	var bod = document.body.style;
 	if (view == "welcomeview") {
+		localStorage.setItem('prevMenuClick', 'profile-li');
 		bod.backgroundColor = '#FFFFFF';
 		localStorage.setItem('onPage', 'loggedout');
 	} else if (view == "profileview") {
@@ -18,7 +27,7 @@ function setViewStyle(view) {
 		if (document.getElementById("side-menu").style.height < window.innerHeight) {
 			document.getElementById("side-menu").style.height = window.innerHeight + 'px';
 		}
-		wallClick();
+		//wallClick();
 		//myProfile();
 		localStorage.setItem('onPage', 'mine');
 	}
@@ -179,8 +188,8 @@ websocketfunction = function() {
 login = function(email, password) {
 	var login = document.getElementsByClassName("login-form");
 	email = email || login[0].value;
-	password = password || login[1].value
-
+	password = password || login[1].value;
+	localStorage.setItem('userEmail',email);
 	signInServer(email,password);
 }
 
@@ -241,6 +250,8 @@ function exitOtherMembersPage() {
 }
 
 function searchClick() {
+	console.log("Searchwindow opened");
+	//history.replaceState(null,'','/');
 	menuSelector("search-li");
 	var searchBlur = document.getElementById("search-blur");
 	searchBlur.style.height = window.innerHeight + 'px';
@@ -248,7 +259,7 @@ function searchClick() {
 	document.getElementById('search-bar').focus();
 }
 
-function wallClick(email) {
+function wallClick() {
 	console.log('wallClick')
 	menuSelector("wall-li");
 	exitOtherMembersPage();
@@ -440,3 +451,22 @@ function drop(ev) {
     var author = ev.dataTransfer.getData("author");
     ev.target.value = author + " wrote: " + data;
 }
+
+/*---------- Client side Routing -------------------*/
+
+page('/profile',function(){
+	localStorage.setItem('prevMenuClick','profile-li');
+	myProfile();
+});
+
+page('/wall', function(){
+	localStorage.setItem('prevMenuClick','wall-li');
+	wallClick();
+});
+
+page('/search',function(){
+	localStorage.setItem('prevMenuClick','search-li');
+	searchClick();
+})
+
+page.start();
