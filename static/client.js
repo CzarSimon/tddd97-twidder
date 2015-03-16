@@ -160,15 +160,16 @@ loginClick = function(email, password) {
 }
 
 websocketfunction = function() {
-	var loc = window.location, new_uri
+	var loc = window.location, new_url
 	if (loc.protocol === "https") {
-			new_uri = "wsss:";
+			new_url = "wsss:";
 		} else {
-			new_uri = "ws:";
+			new_url = "ws:";
 		}
-	new_uri +=  "//" + loc.host;
-	new_uri += loc.pathname + "sign-in";
-	var ws = new WebSocket(new_uri);
+	new_url +=  "//" + loc.host;
+	new_url += loc.pathname + "sign-in";
+	var ws = new WebSocket(new_url);
+	console.log(ws);
 	ws.onmessage = function(response){
 		console.log(response.data);
 		if (response.data == getMyToken()) {
@@ -178,6 +179,7 @@ websocketfunction = function() {
 	}
 	ws.onclose = function() {
 		console.log("We have crashlanded!");
+
 	}
 	ws.onopen = function() {
 		console.log("We have blastoff!");

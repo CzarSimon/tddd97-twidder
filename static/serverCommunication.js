@@ -26,11 +26,11 @@ signInServer = function(email, password) {
 			setMyToken(this.data);
 			displayView('profileview');
 			websocketfunction();
-			history.pushState({},'','/profile');
 		} else {
 			console.log(this.message);
 			displayErrorMessage(this.message);
 		}
+
 	});
 }
 
