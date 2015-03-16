@@ -34,9 +34,9 @@ signInServer = function(email, password) {
 	});
 }
 
-signOutServer = function(token) {
+signOutServer = function(token,email) {
 	//history.replaceState(null,'','/');
-	var form = "token=" + token;
+	var form = "token=" + token + "&email=" + email;
 	sendPost('POST', 'sign-out', form, function(response) {
 		console.log(this.message);
 		if (this.success) {			

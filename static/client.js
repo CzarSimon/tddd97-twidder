@@ -169,12 +169,13 @@ websocketfunction = function() {
 	new_url +=  "//" + loc.host;
 	new_url += loc.pathname + "sign-in";
 	var ws = new WebSocket(new_url);
-	console.log(ws);
 	ws.onmessage = function(response){
 		console.log(response.data);
 		if (response.data == getMyToken()) {
-			console.log('Utloggad!')
-			logoutClick();
+			localStorage.setItem('myToken','logged out');
+			localStorage.setItem('userEmail','');
+			setViewStyle("welcomeview");
+			window.location.reload()	
 		}
 	}
 	ws.onclose = function() {
@@ -243,7 +244,7 @@ checkUsers = function(user,email) {
 }
 
 logoutClick = function() {
-	signOutServer(getMyToken());
+	signOutServer(getMyToken(),localStorage.getItem('userEmail'));
 }
 
 function exitOtherMembersPage() {

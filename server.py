@@ -34,9 +34,8 @@ def signIn():
 			user_connection = {'email': email, 'conn': ws, 'token': userToken}
 			global ConnectedUsers 
 			logoutUserWebSocket(user_connection['email'])
-			ConnectedUsers.append(user_connection)
-			
-	return
+			ConnectedUsers.append(user_connection)		
+	return logoutUserClick(user_connection['email'])
 
 @app.route("/sign-up", methods=["POST"])
 def signUp():
@@ -53,6 +52,8 @@ def signUp():
 @app.route("/sign-out", methods=["POST"])
 def signOut():
 	token = request.form['token']
+	email = request.form['email']
+	logoutUserClick(email)
 	return loginManager.signOut(token)
 
 # ----- End of login routes -----
@@ -158,9 +159,11 @@ def logoutUserWebSocket(email):
 
 def logoutUserClick(email):
 	global ConnectedUsers
+	print ConnectedUsers
 	for item in ConnectedUsers:
 		if (item['email'] == email):
 			ConnectedUsers.remove(item)
+	print ConnectedUsers
 	return ''
 
 
