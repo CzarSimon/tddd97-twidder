@@ -282,9 +282,9 @@ function newMessages(oldLength,messages) {
 	for (var i = 1; i < length + 1; i++) {
 		author = '"' + messages[length - i].sender + '"';
 		clickInstructions = "return searchUser(" + author + ")" + "'";
-		newContent = '<div class="content-box message-box col-md-3 col-sm-11 col-xs-11"><p class="message-text">'
+		newContent = '<div class="content-box message-box col-md-3 col-sm-11 col-xs-11" draggable="true" ondragstart="drag(event)"><p class="message-text">'
 		 + messages[length - i].message
-		 + "</p><p><a class='author' href='' onClick='" + clickInstructions + ">" + messages[length - i].sender 
+		 + "</p><p><a class='author' draggable='false' href='' onClick='" + clickInstructions + ">" + messages[length - i].sender 
 		 + "</a></p></div>" + newContent;
 	}
 	return newContent;
@@ -418,4 +418,25 @@ function refreshClick() {
 			console.log('Refreshed');
 		}
 	}
+}
+
+/*-------- Drag & Drop functions ---------*/
+
+function allowDrop(ev) {
+    ev.preventDefault();
+}
+
+function drag(ev) {
+	var img = document.createElement("img");
+	img.src = "/static/images/drag-and-drop.png";
+	ev.dataTransfer.setDragImage(img, 0, 0);
+    ev.dataTransfer.setData("text", ev.toElement.firstChild.innerHTML);
+    ev.dataTransfer.setData("author",ev.toElement.children[1].innerText);
+}
+
+function drop(ev) {
+    ev.preventDefault();
+    var data = ev.dataTransfer.getData("text");
+    var author = ev.dataTransfer.getData("author");
+    ev.target.value = author + " wrote: " + data;
 }

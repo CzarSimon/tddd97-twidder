@@ -69,7 +69,7 @@
 						</form>
 						<img id="search-img" src="static/images/closeIcon.png" onClick="closeSearch()" width="56px" height="56px">
 					</div>
-					<div id="top-bar" class="col-md-12">
+					<div id="top-bar" ondrop="drop(event)" ondragover="allowDrop(event)" class="col-md-12">
 						<form id="new-message-form" class="col-md-12" onsubmit="return getNewMessage()">
 							<input type="text" id="new-message" class="col-md-12 col-xs-12" placeholder="What up hipsta?!" autocomplete="off"></input>
 						</from> 
