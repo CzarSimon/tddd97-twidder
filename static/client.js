@@ -282,6 +282,7 @@ function aboutClick() {
 }
 
 function menuSelector(listId) {
+	console.log('in menuSelector')
 	var prevClick = localStorage.getItem("prevMenuClick");
 	if (prevClick == "" || prevClick == null) {
 		document.getElementById(listId).style.borderRightWidth = '8px';		
@@ -291,6 +292,7 @@ function menuSelector(listId) {
 	}
 	localStorage.setItem("prevMenuClick", listId);
 	toggleMenu();
+	closeAboutPage();
 }
 
 function newMessages(oldLength,messages) {
@@ -309,6 +311,14 @@ function newMessages(oldLength,messages) {
 		 + "</a></p></div>" + newContent;
 	}
 	return newContent;
+}
+
+function closeAboutPage() {
+	console.log(document.getElementById('hidden-content').style.display, "hidden-content status")
+	if (document.getElementById('hidden-content').style.display == 'block') {
+		console.log('it was block')
+		document.getElementById('hidden-content').style.display = "none";
+	}
 }
 
 function generateGuestWall(email) {
@@ -349,6 +359,7 @@ function getNewMessage() {
 
 	document.getElementById("new-message").value = "";
 	document.getElementById("new-message").blur();
+	closeAboutPage();
 	return false;
 }
 

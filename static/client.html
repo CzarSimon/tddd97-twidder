@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-	<head>
+	<head
 		<meta charset="utf-8">
 		<!-- Bootsrap -->
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
@@ -81,7 +81,7 @@
 					<div id="content">
 
 					</div>
-					<div id="hidden-content" style="display: none">
+					<div id="hidden-content" class="col-md-10 col-md-offset-1" style="display: none">
 						<div id="about-page">
 							<div id='about-info'>
 								<h1>About</h1>
@@ -89,14 +89,16 @@
 							</div>
 							<div id='stats-info'>
 								<h1>Stats</h1>
-								<div id="member-canvas">
-									<canvas id="member-chart" width="300" height="300"></canvas>
+								<div id="member-canvas" class="col-md-6 col-xs-12">
+									<h3>Member ratio: </h3>
+									<canvas id="member-chart" width="400px" height='200px'></canvas>
 								</div>
-								<div id="message-canvas">
-									<canvas id="message-chart" width="300" height="300"></canvas>
+								<div id="message-canvas" class="col-md-6 col-xs-12">
+									<h3>Message ratio: </h3>
+									<canvas id="message-chart" width="400px" height='200px'></canvas>
 								</div>
 								<div id="hidden-live-data" style="display: none">	
-									<h4 id='signed-up-members'></h4>
+									<h4 id='logged-out-users'></h4>
 									<h4 id='signed-in-users'></h4>
 									<h4 id='posted-messages'></h4>
 									<h4 id='my-messages'></h4>

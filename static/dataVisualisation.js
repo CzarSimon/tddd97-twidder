@@ -2,11 +2,11 @@ function publishData(data) {
 	console.log('in publish data');
 	console.log(data);
 	
-	$('#signed-up-members').html(data.users);
+	$('#logged-out-users').html(data.users - data.loggedIn);
 	$('#posted-messages').html(data.messages);
 	$('#signed-in-users').html(data.loggedIn);
 	$('#my-messages').html(data.myMessages); 
-	
+
 	if (document.getElementById('hidden-content').style.display == 'block') {
 		openAboutPage();
 	}
@@ -18,16 +18,16 @@ function openAboutPage(){
 
 	var memberPieData = 	[
 								{
-									value: $('#signed-up-members').html(),
+									value: $('#logged-out-users').html(),
 									color:"#F7464A",
 									highlight: "#FF5A5E",
-									label: "Red"
+									label: "Logged out users"
 								},
 								{
 									value: $('#signed-in-users').html(),
 									color: "#46BFBD",
 									highlight: "#5AD3D1",
-									label: "Green"
+									label: "Logged in users"
 								}
 							]
 
@@ -36,13 +36,13 @@ function openAboutPage(){
 									value: $('#posted-messages').html(),
 									color: "#FDB45C",
 									highlight: "#FFC870",
-									label: "Yellow"
+									label: "Messages on Twidder"
 								},
 								{
 									value: $('#my-messages').html(),
 									color: "#949FB1",
 									highlight: "#A8B3C5",
-									label: "Grey"	
+									label: "Messages on your wall"	
 								}
 							]
 	console.log(messagePieData)
