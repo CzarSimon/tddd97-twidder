@@ -297,6 +297,19 @@ function signUp() {
 	signUpServer(form[0].value, form[1].value, form[2].value, form[3].value, form[4].value, form[5].value, form[6].value, form[7].value)
 }
 
+/* Function that validates that every field has been filled in
+on the sign-up form*/
+
+hasEmptyFields = function(formClass) {
+	form = document.getElementsByClassName(formClass);
+
+	for (i=0; i<form.length; i++) {
+		if (form[i].value == "") {
+			return true;
+		} 
+	}
+}
+
 /*------------- WALL FUNCTIONS -------------*/
 
 
@@ -411,9 +424,11 @@ function searchClick() {
 	console.log("Searchwindow opened");
 	menuSelector("search-li");
 	var searchBlur = document.getElementById("search-blur");
-	searchBlur.style.height = window.innerHeight + 'px';
+	searchBlur.style.height = window.outerHeight + 'px';
 	searchBlur.style.display = 'block';
 	document.getElementById('search-bar').focus();
+	document.getElementById('content').style.display = 'none';
+	document.getElementById('top-bar').style.display = 'none';
 }
 
 /*Function that is called when a search for a user has failed*/
@@ -431,22 +446,16 @@ function failedSearch(field,message) {
 
 /* Function that closes the search "window" */
 
-function closeSearch() {	
+function closeSearch() {
+	document.getElementById('content').style.display = 'block';
+	document.getElementById('top-bar').style.display = 'block';	
 	var searchField = document.getElementById("search-bar");
 	searchField.value = "";
 	searchField.blur();
 	document.getElementById("search-blur").style.display = 'none';
 }
 
-hasEmptyFields = function(formClass) {
-	form = document.getElementsByClassName(formClass);
 
-	for (i=0; i<form.length; i++) {
-		if (form[i].value == "") {
-			return true;
-		} 
-	}
-}
 
 /*------------ VARIOUS FUNCTIONS----------------*/
 
