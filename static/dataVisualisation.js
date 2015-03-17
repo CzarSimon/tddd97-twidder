@@ -1,3 +1,7 @@
+/*
+The funcution recives live data from websocket connections and displays it
+in the hidden div's on the about page. Updates the about page if it is already open.
+*/
 function publishData(data) {
 	console.log('in publish data');
 	console.log(data);
@@ -12,6 +16,10 @@ function publishData(data) {
 	}
 }
 
+/*
+Displays the about page and displays the data that publishData() has put in the hidden div's on the about page.
+The data is displayed in two pie charts.
+*/
 function openAboutPage(){
 	$('#content').html('');
 	document.getElementById('hidden-content').style.display = 'block'

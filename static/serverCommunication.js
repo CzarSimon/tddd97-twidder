@@ -1,3 +1,7 @@
+/*
+Callback functon that handles all xmlhttp requests. It calls the route, given as a parameter, in 
+server.py with the given method and form data. Upon success it performs the given callback functions.
+*/
 var sendPost = function(method, route, form, callback) {
 	var xmlhttp; 
 	if (window.XMLHttpRequest){
@@ -16,6 +20,9 @@ var sendPost = function(method, route, form, callback) {
 	xmlhttp.send(form)
 }
 
+/*
+Calls signIn in server.py, assigns the user a token, a websocket and displayst the profile view for the logged in user.
+*/
 signInServer = function(email, password) {
 	//history.replaceState(null,'','/');
 	var form = "email=" + email + "&password=" + password;
@@ -34,6 +41,9 @@ signInServer = function(email, password) {
 	});
 }
 
+/*
+Calls signOut in server.py, drops the users token and displays the welcome view for the logged out user.
+*/
 signOutServer = function(token,email) {
 	//history.replaceState(null,'','/');
 	var form = "token=" + token + "&email=" + email;
@@ -49,6 +59,9 @@ signOutServer = function(token,email) {
 	});
 }
 
+/*
+Sends a message to server.py, if it was succefully posted the wall it was sent to is generated
+*/
 messageToServer = function(token, email, message) {
 	history.replaceState(null,'','/');
 	console.log('in messageToServer');
@@ -67,12 +80,16 @@ messageToServer = function(token, email, message) {
 	});
 }
 
+/*
+Retrives messages belonging to a user that is identified by either email or token.
+If messages beloning to that user is found they are sent to generateWall() in client.js
+*/
 getMessagesFromServer = function(token, email) {
 	//history.replaceState(null,'','/');
 	console.log('in getMessagesFromServer');
 	var form = "";
 	var route = "";
-	var otherWall = "";
+	var otherWall = ""; //tells generateWall() if the user wants to view another users wall
 	if (email == 'my wall' || email == null) {
 		form = "token=" + token;
 		route = "my-wall";
@@ -97,6 +114,11 @@ getMessagesFromServer = function(token, email) {
 	});
 }
 
+/*
+Retrives user data from server.py using either token or email.
+If the data is retrived successfully checkUsers() and closeSearch() in client.js is called.
+If the data is not found in the database an error message is sent to the user.
+*/
 getUserFromServer = function(token, email) {
 	//history.replaceState(null,'','/');
 	console.log('in getUserFromServer')
@@ -127,6 +149,9 @@ getUserFromServer = function(token, email) {
 	});
 }
 
+/*
+Calls changePassword in server.py.
+*/
 changePasswordThruServer = function(token, oldPassword, newPassword) {
 	//history.replaceState(null,'','/');
 	var form = "token=" + token + "&oldPassword=" + oldPassword + "&newPassword=" + newPassword;
@@ -135,6 +160,10 @@ changePasswordThruServer = function(token, oldPassword, newPassword) {
 	});
 }
 
+/*
+Calls signUp in server.py with the user info that the user has provided.
+If the user was successfully signed up, signInServer in this module is called.
+*/
 signUpServer = function(firstname, familyname, gender, city, country, email, password, repeatPassword) {
 	console.log('in signUpServer')
 	//history.replaceState(null,'','/');
