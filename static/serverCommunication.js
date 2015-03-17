@@ -50,15 +50,17 @@ signOutServer = function(token,email) {
 }
 
 messageToServer = function(token, email, message) {
-	//history.replaceState(null,'','/');
+	history.replaceState(null,'','/');
 	console.log('in messageToServer');
 	var form = "token=" + token + "&email=" + email + "&message=" + message;
+	console.log(form)
 	sendPost('POST', 'post-message', form, function(response) {
 		console.log(this.message);
 		if (this.success) {	
 			if (email == "my email") {
 				getMessagesFromServer(token);
 			} else {
+				console.log(email);
 				generateGuestWall(email);
 			}
 		}

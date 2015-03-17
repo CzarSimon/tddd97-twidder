@@ -10,9 +10,10 @@ displayView = function(currentView){
 		myProfile();
 	} else if (view == 'search-li') {
 		searchClick();
+	} else if (view == 'about-lie') {
+		aboutClick();
 	}
 	setViewStyle(currentView);
-	//$('body').css('background-size', '110% 130%')
 }
 
 function setViewStyle(view) {
@@ -22,13 +23,10 @@ function setViewStyle(view) {
 		bod.backgroundColor = '#FFFFFF';
 		localStorage.setItem('onPage', 'loggedout');
 	} else if (view == "profileview") {
-		//bod.backgroundImage = '';
 		bod.backgroundColor = '#E8EAF6';
 		if (document.getElementById("side-menu").style.height < window.innerHeight) {
 			document.getElementById("side-menu").style.height = window.innerHeight + 'px';
 		}
-		//wallClick();
-		//myProfile();
 		localStorage.setItem('onPage', 'mine');
 	}
 }
@@ -141,22 +139,7 @@ function checkSignUpForm() {
 	formData["email"] =  form[5].value; 
 	formData["password"] =  form[6].value; 
 	
-    //alert(serverstub.signUp(formData)["message"]);
     loginClick(formData["email"],formData["password"]);
-}
-
-loginClick = function(email, password) {
-	var login = document.getElementsByClassName("login-form");
-	email = email || login[0].value;
-	password = password || login[1].value
-
-	var user = serverstub.signIn(email,password);
-	if (user["success"]) {
-		setMyToken(user["data"]);
-		displayView("profileview");	
-	} else {
-		displayErrorMessage(user["message"]);
-	}
 }
 
 websocketfunction = function() {
@@ -218,6 +201,8 @@ localTokenToStorage = function() {
 
 function myProfile() {
 	console.log('in myProfile')
+	menuSelector('profile-li')
+	toggleMenu();
 	exitOtherMembersPage();
 	getUserFromServer(getMyToken());
 }
@@ -251,6 +236,8 @@ checkUsers = function(user,email) {
 }
 
 logoutClick = function() {
+	var bod = document.body.style;
+	bod.backgroundColor = '#FFFFFF';
 	signOutServer(getMyToken(),localStorage.getItem('userEmail'));
 }
 
@@ -271,6 +258,7 @@ function searchClick() {
 
 function wallClick() {
 	console.log('wallClick')
+	closeSearch();
 	menuSelector("wall-li");
 	exitOtherMembersPage();
 	getMessagesFromServer(getMyToken(), 'my wall');	
@@ -278,19 +266,18 @@ function wallClick() {
 
 function aboutClick() {
 	menuSelector('about-li');
+	closeSearch();
 	openAboutPage();
 }
 
 function menuSelector(listId) {
 	console.log('in menuSelector')
 	var prevClick = localStorage.getItem("prevMenuClick");
-	if (prevClick == "" || prevClick == null) {
-		document.getElementById(listId).style.borderRightWidth = '8px';		
-	} else {
-		document.getElementById(prevClick).style.borderRightWidth = '0px';
-		document.getElementById(listId).style.borderRightWidth = '8px';
-	}
-	localStorage.setItem("prevMenuClick", listId);
+	document.getElementById('wall-li').style.borderRightWidth = '0px';
+	document.getElementById('profile-li').style.borderRightWidth = '0px';
+	document.getElementById('search-li').style.borderRightWidth = '0px';
+	document.getElementById('about-li').style.borderRightWidth = '0px';
+	document.getElementById(prevClick).style.borderRightWidth = '8px';
 	toggleMenu();
 	closeAboutPage();
 }
@@ -324,6 +311,7 @@ function closeAboutPage() {
 function generateGuestWall(email) {
 	console.log('in generateGuestWall')
 	menuSelector("wall-li");
+	toggleMenu();
 	console.log(email)
 	getMessagesFromServer(getMyToken(), email);
 }
@@ -372,6 +360,7 @@ function printSearchOptions(match) {
 
 function searchUser(clickedSearch) {
 	console.log('in searchUser');
+	toggleMenu();
 	exitOtherMembersPage();
 	var searchField = document.getElementById("search-bar");
 	if (clickedSearch == null) {
@@ -488,6 +477,11 @@ page('/wall', function(){
 page('/search',function(){
 	localStorage.setItem('prevMenuClick','search-li');
 	searchClick();
+})
+
+page('/about',function(){
+	localStorage.setItem('prevMenuClick','about-li');
+	aboutClick()
 })
 
 page.start();
