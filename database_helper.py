@@ -71,7 +71,6 @@ def change_password(email, new_password):
 # Returns all the data in the USER table associated with a specific email adress
 # Parameters: 'email' (type: string)
 # Returns: 'data' (type: list)
-
 def get_user_data_by_email(email):
     
     with con:
@@ -80,6 +79,7 @@ def get_user_data_by_email(email):
         data = cur.fetchone()
         return data
 
+# Returns total number of users in the database.
 def number_of_users():
     print('in db_h')
     with con:
@@ -88,6 +88,7 @@ def number_of_users():
         data = cur.fetchone()[0]
         return data
 
+# Returns total number of messages in the database.
 def number_of_messages():
     with con:
         cur = con.cursor()
@@ -95,6 +96,7 @@ def number_of_messages():
         data = cur.fetchone()[0]
         return data
 
+# Returns the number of messages the wall beloning to the person with the given email.
 def messages_on_my_wall(email):
     with con:
         cur = con.cursor()
@@ -140,26 +142,3 @@ def post_message (poster_email, message, wall_email):
     with con:
         cur = con.cursor()
         cur.execute('INSERT INTO messages(email_poster,email_wall,message) values(?,?,?)',(poster_email,wall_email,message))
-
-
-"""
-app.config.from_envvar('FLASKR_SETTINGS', silent=True)
-
-if __name__ == '__main__':
-	app.debub = True
-	app.run()
-        init_db()
-        sign_up('Sven@gmail.com','asd', 'Sven','Balle','male', 'linkoping','sweden')
-        sign_up('Bengt@hotmail.com','qwerty','Bengt','Ballong','MEJL','STHLM','Denmark')
-        change_password('Sven@gmail.com','Svennebanan')
-        print(get_user_data_by_email('Bengt@hotmail.com'))
-        post_message('Sven@gmail.com','Alla suger','Bengt@gmail.com')
-        post_message('Sven@gmail.com','Nagra suger','Bengt@gmail.com')
-        post_message('Sven@gmail.com','Ingen suger','Bengt@gmail.com')
-        post_message('Bengt@hotmail.com','Etta','Sven@gmail.com')
-        post_message('Bengt@hotmail.com','Tvaa','Sven@gmail.com')
-        post_message('Bengt@hotmail.com','Trea','Sven@gmail.com')
-        print(get_user_message_by_email('Bengt@hotmail.com'))
-        print(sign_in('Sven@gmail.com','asd'))
-        print(sign_in('Sven@gmail.com','Svennebanan'))
-"""

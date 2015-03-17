@@ -3,12 +3,6 @@ body {
 	font-family: Georgia;
 }
 
-/*.welcome {
-	width: 600px;
-	height: 400px;
-	margin: 50px auto;
-}*/
-
 #logo {
 	width: 60%;
 	height: 360px;
@@ -16,13 +10,6 @@ body {
 	/*background-image: url("static/images/logo2.png");*/
 	background-position: center;
 }
-
-#main-logo{
-}
-
-/*#login-form, #signup-form {
-	padding-left: 2%;
-}*/
 
 .login-form, .signup-form {
 	/*width: 46%;*/
@@ -40,7 +27,6 @@ body {
 }
 
 .login {
-	/*width: 100%;*/
 	margin-top: -5%;
 	margin-bottom: 5%;
 	overflow: auto;

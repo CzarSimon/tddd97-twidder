@@ -149,7 +149,7 @@ def initDatabase():
 	else:
 		return "don't do it man"
 
-
+# Retrives data to be pushed to all logged in users and subsequently sends it to all logged in users.
 def publishLiveData():
 	global ConnectedUsers
 	print('in publish live data')

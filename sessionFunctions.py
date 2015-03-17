@@ -57,11 +57,13 @@ def getUserMessagesByToken(token):
 	email = session[token]
 	return getUserMessagesByEmail(token, email)
 
-
+# Returns the email of the user with the given token
 def getSessionEmail(token):
 	return session[token]
 
 """
+Gets the messages of the user with the given email.
+Returns them in a JSON object
 """
 def getUserMessagesByEmail(token, email):
 	parsedMessaages = __parseMessages(db.get_user_message_by_email(email))
