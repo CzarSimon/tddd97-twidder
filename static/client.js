@@ -3,6 +3,14 @@ var root_url = "http//:127.0.0.1:5000/"
 
 displayView = function(currentView){
 	$('body').html(document.getElementById(currentView).text);
+	var view = localStorage.getItem('prevMenuClick');
+	if (view  == 'wall-li'){
+		wallClick();
+	} else if (view == 'profile-li') {
+		myProfile();
+	} else if (view == 'search-li') {
+		searchClick();
+	}
 	setViewStyle(currentView);
 	//$('body').css('background-size', '110% 130%')
 }
@@ -10,6 +18,7 @@ displayView = function(currentView){
 function setViewStyle(view) {
 	var bod = document.body.style;
 	if (view == "welcomeview") {
+		localStorage.setItem('prevMenuClick', 'profile-li');
 		bod.backgroundColor = '#FFFFFF';
 		localStorage.setItem('onPage', 'loggedout');
 	} else if (view == "profileview") {
@@ -18,7 +27,7 @@ function setViewStyle(view) {
 		if (document.getElementById("side-menu").style.height < window.innerHeight) {
 			document.getElementById("side-menu").style.height = window.innerHeight + 'px';
 		}
-		wallClick();
+		//wallClick();
 		//myProfile();
 		localStorage.setItem('onPage', 'mine');
 	}
@@ -151,21 +160,23 @@ loginClick = function(email, password) {
 }
 
 websocketfunction = function() {
-	var loc = window.location, new_uri
+	var loc = window.location, new_url
 	if (loc.protocol === "https") {
-			new_uri = "wsss:";
+			new_url = "wsss:";
 		} else {
-			new_uri = "ws:";
+			new_url = "ws:";
 		}
-	new_uri +=  "//" + loc.host;
-	new_uri += loc.pathname + "sign-in";
-	var ws = new WebSocket(new_uri);
+	new_url +=  "//" + loc.host;
+	new_url += loc.pathname + "sign-in";
+	var ws = new WebSocket(new_url);
 	ws.onmessage = function(response){
 		console.log(response.data);
 		console.log(typeof(response.data), 'response data');
 		if (response.data == getMyToken()) {
-			console.log('Utloggad!')
-			logoutClick();
+			localStorage.setItem('myToken','logged out');
+			localStorage.setItem('userEmail','');
+			setViewStyle("welcomeview");
+			window.location.reload()	
 		}
 		if (JSON.parse(response.data).type == 'live data') {
 			console.log(response.data);
@@ -176,6 +187,7 @@ websocketfunction = function() {
 	}
 	ws.onclose = function() {
 		console.log("We have crashlanded!");
+
 	}
 	ws.onopen = function() {
 		console.log("We have blastoff!");
@@ -186,8 +198,8 @@ websocketfunction = function() {
 login = function(email, password) {
 	var login = document.getElementsByClassName("login-form");
 	email = email || login[0].value;
-	password = password || login[1].value
-
+	password = password || login[1].value;
+	localStorage.setItem('userEmail',email);
 	signInServer(email,password);
 }
 
@@ -239,7 +251,7 @@ checkUsers = function(user,email) {
 }
 
 logoutClick = function() {
-	signOutServer(getMyToken());
+	signOutServer(getMyToken(),localStorage.getItem('userEmail'));
 }
 
 function exitOtherMembersPage() {
@@ -248,6 +260,8 @@ function exitOtherMembersPage() {
 }
 
 function searchClick() {
+	console.log("Searchwindow opened");
+	//history.replaceState(null,'','/');
 	menuSelector("search-li");
 	var searchBlur = document.getElementById("search-blur");
 	searchBlur.style.height = window.innerHeight + 'px';
@@ -255,7 +269,7 @@ function searchClick() {
 	document.getElementById('search-bar').focus();
 }
 
-function wallClick(email) {
+function wallClick() {
 	console.log('wallClick')
 	menuSelector("wall-li");
 	exitOtherMembersPage();
@@ -289,9 +303,9 @@ function newMessages(oldLength,messages) {
 	for (var i = 1; i < length + 1; i++) {
 		author = '"' + messages[length - i].sender + '"';
 		clickInstructions = "return searchUser(" + author + ")" + "'";
-		newContent = '<div class="content-box message-box col-md-3 col-sm-11 col-xs-11"><p class="message-text">'
+		newContent = '<div class="content-box message-box col-md-3 col-sm-11 col-xs-11" draggable="true" ondragstart="drag(event)"><p class="message-text">'
 		 + messages[length - i].message
-		 + "</p><p><a class='author' href='' onClick='" + clickInstructions + ">" + messages[length - i].sender 
+		 + "</p><p><a class='author' draggable='false' href='' onClick='" + clickInstructions + ">" + messages[length - i].sender 
 		 + "</a></p></div>" + newContent;
 	}
 	return newContent;
@@ -426,3 +440,43 @@ function refreshClick() {
 		}
 	}
 }
+
+/*-------- Drag & Drop functions ---------*/
+
+function allowDrop(ev) {
+    ev.preventDefault();
+}
+
+function drag(ev) {
+	var img = document.createElement("img");
+	img.src = "/static/images/drag-and-drop.png";
+	ev.dataTransfer.setDragImage(img, 0, 0);
+    ev.dataTransfer.setData("text", ev.toElement.firstChild.innerHTML);
+    ev.dataTransfer.setData("author",ev.toElement.children[1].innerText);
+}
+
+function drop(ev) {
+    ev.preventDefault();
+    var data = ev.dataTransfer.getData("text");
+    var author = ev.dataTransfer.getData("author");
+    ev.target.value = author + " wrote: " + data;
+}
+
+/*---------- Client side Routing -------------------*/
+
+page('/profile',function(){
+	localStorage.setItem('prevMenuClick','profile-li');
+	myProfile();
+});
+
+page('/wall', function(){
+	localStorage.setItem('prevMenuClick','wall-li');
+	wallClick();
+});
+
+page('/search',function(){
+	localStorage.setItem('prevMenuClick','search-li');
+	searchClick();
+})
+
+page.start();

@@ -6,7 +6,7 @@ from geventwebsocket.handler import WebSocketHandler
 from geventwebsocket import WebSocketServer, WebSocketApplication, Resource
 
 
-app = Flask(__name__, static_url_path='/static') 
+app = Flask(__name__, static_url_path='/static',template_folder='static') 
 app.secret_key = 'SWNGh6pY5LRy7zka82c5OUFyAkbxU5AwB2V5'
 ConnectedUsers = []
 
@@ -36,9 +36,8 @@ def signIn():
 			global ConnectedUsers 
 			logoutUserWebSocket(user_connection['email'])
 			ConnectedUsers.append(user_connection)
-			publishLiveData()
-			
-	return
+			publishLiveData()		
+	return logoutUserClick(user_connection['email'])
 
 @app.route("/sign-up", methods=["POST"])
 def signUp():
@@ -57,13 +56,12 @@ def signUp():
 @app.route("/sign-out", methods=["POST"])
 def signOut():
 	token = request.form['token']
+	email = request.form['email']
 	response = loginManager.signOut(token)
-	for user in ConnectedUsers:
-		if user['token'] == token:
-			ConnectedUsers.remove(user)
-			break
+	logoutUserClick(email)
 	publishLiveData()
 	return response
+
 
 # ----- End of login routes -----
 
@@ -122,6 +120,22 @@ def postMessage():
 
 # ----- End of 'session functions' -----
 
+# ----- Routes for refreshing the page -----
+
+@app.route('/wall', methods=['GET','POST'])
+def wall():
+	return render_template('client.html')
+
+@app.route('/profile', methods=['GET','POST'])
+def profile():
+	return render_template('client.html')
+
+@app.route('/search', methods=['GET','POST'])
+def search():
+	return render_template('client.html')
+
+
+
 
 @app.route('/init-db', methods=['POST','GET'])
 def initDatabase():
@@ -168,9 +182,11 @@ def logoutUserWebSocket(email):
 
 def logoutUserClick(email):
 	global ConnectedUsers
+	print ConnectedUsers
 	for item in ConnectedUsers:
 		if (item['email'] == email):
 			ConnectedUsers.remove(item)
+	print ConnectedUsers
 	return ''
 
 
