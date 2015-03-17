@@ -21,6 +21,7 @@ def runClient():
 # ----- Login routes -----
 
 # Route for logging in, calls the signIn functions in the loginManager module.
+
 @app.route("/sign-in", methods=["POST","GET"])
 def signIn():
 	if request.method == 'POST':
@@ -29,22 +30,18 @@ def signIn():
 		response = loginManager.signIn(email,password)
 		return response
 
-	if request.environ.get('wsgi.websocket'):
-		print "Socket 1"		
+	if request.environ.get('wsgi.websocket'):	
 		ws = request.environ['wsgi.websocket']
-		print "Socket 2"
 		while True:	
-			print "Socket 3"
 			userToken = ws.receive()
 			email = sessionFunctions.getSessionEmail(userToken)
 			user_connection = {'email': email, 'conn': ws, 'token': userToken}
 			global ConnectedUsers 
-			print ConnectedUsers
 			if logoutUserWebSocket(user_connection):
 				ConnectedUsers.append(user_connection)
 			print ConnectedUsers
-			publishLiveData()		
-	return logoutUserClick(user_connection['email'])
+			publishLiveData()
+	return ''
 
 # Route for the sign up function
 @app.route("/sign-up", methods=["POST"])
