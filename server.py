@@ -5,13 +5,15 @@ from gevent.pywsgi import WSGIServer
 from geventwebsocket.handler import WebSocketHandler
 from geventwebsocket import WebSocketServer, WebSocketApplication, Resource
 
-
+# Starts the Flask application and specifies where the template and static folders are
 app = Flask(__name__, static_url_path='/static',template_folder='static') 
 app.secret_key = 'SWNGh6pY5LRy7zka82c5OUFyAkbxU5AwB2V5'
+
+# Global list of all the connected users currently logged into the system
 ConnectedUsers = []
 
 
-
+# Route for the main loginpage of the application
 @app.route("/", methods=['POST', 'GET'])
 def runClient():
 	return app.send_static_file('client.html')
@@ -39,6 +41,7 @@ def signIn():
 			publishLiveData()		
 	return logoutUserClick(user_connection['email'])
 
+# Route for the sign up function
 @app.route("/sign-up", methods=["POST"])
 def signUp():
 	email = request.form['email']
@@ -53,6 +56,7 @@ def signUp():
 	publishLiveData();
 	return response
 
+# Route for the sign out function
 @app.route("/sign-out", methods=["POST"])
 def signOut():
 	token = request.form['token']
@@ -62,21 +66,9 @@ def signOut():
 	publishLiveData()
 	return response
 
-
-# ----- End of login routes -----
-
-@app.route('/clear-session', methods=['POST', 'GET'])
-def clearSesison():
-	session.clear()
-	return 'fuck you'
-
-@app.route('/get-session', methods=['POST','GET'])
-def getSession():
-	print session
-	return 'See terminal for sessoins'
-
 # ----- Routes to be called once the user is logged in 'session functions' -----
 
+# Route for chaning the password
 @app.route("/change-password", methods=['POST'])
 def changePassword():
 	token = request.form['token']
@@ -84,29 +76,34 @@ def changePassword():
 	newPassword = request.form['newPassword']
 	return sessionFunctions.changePassword(token,oldPassword,newPassword)
 
+
+# Route for getting the user data with a supplied token
 @app.route("/get-user-data-by-token", methods=['POST','GET'])
 def getUserDataByToken():
 	token = request.form['token']
 	return sessionFunctions.getUserDataByToken(token)
 
+# Route for getting the user data with a supplied email (and token)
 @app.route("/get-user-data-by-email", methods=['POST','GET'])
 def getUserDataByEmail():
 	token = request.form['token']
 	email = request.form['email']
 	return sessionFunctions.getUserDataByEmail(token, email)
 
+# Route for displaying the logged in users wall
 @app.route("/my-wall", methods=['POST'])
 def getMyWall():
 	token = request.form['token']
 	return sessionFunctions.getUserMessagesByToken(token)
-		
+
+# Route for displaying a diffrent users wall		
 @app.route("/other-wall", methods=['POST'])
 def getOtherWall():
 	token = request.form['token']
 	email = request.form['email']
 	return sessionFunctions.getUserMessagesByEmail(token, email)
 
-
+# Route for posting a message to a users wall
 @app.route('/post-message', methods=['POST'])
 def postMessage():
 	token = request.form['token']
@@ -122,25 +119,28 @@ def postMessage():
 
 # ----- Routes for refreshing the page -----
 
+# Route for returning to the Wall page when refresh is used
 @app.route('/wall', methods=['GET','POST'])
 def wall():
 	return render_template('client.html')
 
+# Route for returning the the profile page when refresh is used
 @app.route('/profile', methods=['GET','POST'])
 def profile():
 	return render_template('client.html')
 
+# Route for returning to the search page when refresh is used
 @app.route('/search', methods=['GET','POST'])
 def search():
 	return render_template('client.html')
 
+# Route for returning to the about page when refresh is used
 @app.route('/about', methods=['GET','POST'])
 def about():
 	return render_template('client.html')
 
 
-
-
+# Route for initializing the database
 @app.route('/init-db', methods=['POST','GET'])
 def initDatabase():
 	confirmation = request.form['confirm']
@@ -149,19 +149,6 @@ def initDatabase():
 	else:
 		return "don't do it man"
 
-def checkSession(token):
-	if token in session:
-		print(session)
-		return 'you are logged in'
-	else:
-		return 'not logged in'
-
-def getUserToken():
-
-	# Will be used to extract token from the users cookie
-	token = 'not a token'
-
-	return token
 
 def publishLiveData():
 	global ConnectedUsers
@@ -175,6 +162,10 @@ def publishLiveData():
 		connection = user['conn']
 		connection.send(data)
 
+# Function that iterates through the ConnectedUsers list
+# and removes the uses that is currently trying to log in
+# This will log out the user if he is logged in in another
+# webbrowser through the use of websockets
 def logoutUserWebSocket(email):
 	global ConnectedUsers
 	for item in ConnectedUsers:	
@@ -184,6 +175,8 @@ def logoutUserWebSocket(email):
 			ConnectedUsers.remove(item)
 	return ''
 
+# Removes a user from the ConnectedUsers list
+# when the user logs out
 def logoutUserClick(email):
 	global ConnectedUsers
 	print ConnectedUsers
@@ -194,6 +187,7 @@ def logoutUserClick(email):
 	return ''
 
 
+# Initializes the Gevent server
 if __name__ == "__main__":
 	http_server = WSGIServer(('',5000), app, handler_class=WebSocketHandler)
 	http_server.serve_forever()
