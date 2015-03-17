@@ -236,6 +236,8 @@ checkUsers = function(user,email) {
 }
 
 logoutClick = function() {
+	var bod = document.body.style;
+	bod.backgroundColor = '#FFFFFF';
 	signOutServer(getMyToken(),localStorage.getItem('userEmail'));
 }
 
@@ -299,6 +301,7 @@ function newMessages(oldLength,messages) {
 function generateGuestWall(email) {
 	console.log('in generateGuestWall')
 	menuSelector("wall-li");
+	toggleMenu();
 	console.log(email)
 	getMessagesFromServer(getMyToken(), email);
 }
