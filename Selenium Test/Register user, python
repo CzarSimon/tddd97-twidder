@@ -1,0 +1,84 @@
+# -*- coding: utf-8 -*-
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.support.ui import Select
+from selenium.common.exceptions import NoSuchElementException
+from selenium.common.exceptions import NoAlertPresentException
+import unittest, time, re
+
+class RegsterUserPython(unittest.TestCase):
+    def setUp(self):
+        self.driver = webdriver.Firefox()
+        self.driver.implicitly_wait(30)
+        self.base_url = "http://127.0.0.1:5000/"
+        self.verificationErrors = []
+        self.accept_next_alert = True
+    
+    def test_regster_user_python(self):
+        driver = self.driver
+        driver.get(self.base_url + "/")
+        driver.find_element_by_id("signup-button").click()
+        driver.find_element_by_id("fname-SU").clear()
+        driver.find_element_by_id("fname-SU").send_keys("Mikael")
+        driver.find_element_by_id("lname-SU").clear()
+        driver.find_element_by_id("lname-SU").send_keys("Lietha")
+        driver.find_element_by_id("gender-SU").clear()
+        driver.find_element_by_id("gender-SU").send_keys("Male")
+        driver.find_element_by_id("city-SU").clear()
+        driver.find_element_by_id("city-SU").send_keys("Linkoping")
+        driver.find_element_by_id("country-SU").clear()
+        driver.find_element_by_id("country-SU").send_keys("Sweden")
+        driver.find_element_by_id("email-SU").clear()
+        driver.find_element_by_id("email-SU").send_keys("Mikael")
+        driver.find_element_by_id("password-SU").clear()
+        driver.find_element_by_id("password-SU").send_keys("12345")
+        driver.find_element_by_id("repeatPassword-SU").clear()
+        driver.find_element_by_id("repeatPassword-SU").send_keys("12")
+        driver.find_element_by_id("signup-button").click()
+        driver.find_element_by_id("country-SU").clear()
+        driver.find_element_by_id("country-SU").send_keys("")
+        driver.find_element_by_id("email-SU").clear()
+        driver.find_element_by_id("email-SU").send_keys("Mikael@hotmail.com")
+        driver.find_element_by_id("signup-button").click()
+        driver.find_element_by_id("country-SU").clear()
+        driver.find_element_by_id("country-SU").send_keys("Sweden")
+        driver.find_element_by_id("signup-button").click()
+        driver.find_element_by_id("repeatPassword-SU").clear()
+        driver.find_element_by_id("repeatPassword-SU").send_keys("1234")
+        driver.find_element_by_id("password-SU").clear()
+        driver.find_element_by_id("password-SU").send_keys("1234")
+        driver.find_element_by_id("signup-button").click()
+        driver.find_element_by_id("password-SU").clear()
+        driver.find_element_by_id("password-SU").send_keys("12345")
+        driver.find_element_by_id("repeatPassword-SU").clear()
+        driver.find_element_by_id("repeatPassword-SU").send_keys("12345")
+        driver.find_element_by_id("signup-button").click()
+    
+    def is_element_present(self, how, what):
+        try: self.driver.find_element(by=how, value=what)
+        except NoSuchElementException, e: return False
+        return True
+    
+    def is_alert_present(self):
+        try: self.driver.switch_to_alert()
+        except NoAlertPresentException, e: return False
+        return True
+    
+    def close_alert_and_get_its_text(self):
+        try:
+            alert = self.driver.switch_to_alert()
+            alert_text = alert.text
+            if self.accept_next_alert:
+                alert.accept()
+            else:
+                alert.dismiss()
+            return alert_text
+        finally: self.accept_next_alert = True
+    
+    def tearDown(self):
+        self.driver.quit()
+        self.assertEqual([], self.verificationErrors)
+
+if __name__ == "__main__":
+    unittest.main()
