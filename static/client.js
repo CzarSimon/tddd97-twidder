@@ -1,4 +1,4 @@
-var root_url = "http//:127.0.0.1:5000/"
+var root_url = "127.0.0.1:5000/"
 
 /*------------------- DISPLAY FUNCTIONS ---------------------------__*/
 
@@ -7,7 +7,13 @@ calls the displayView function*/
 
 window.onload = function(){
 	var view = 'null';
-
+	if (getMyToken() == 'logged out') {
+		
+	}else {
+		console.log('Websocket Restart!');
+		websocketfunction();
+	}
+	
 	if (getMyToken() == null || getMyToken() == "logged out") {
 		view = "welcomeview";
 	} else {
@@ -28,7 +34,7 @@ displayView = function(currentView){
 		myProfile();
 	} else if (view == 'search-li') {
 		searchClick();
-	} else if (view == 'about-lie') {
+	} else if (view == 'about-li') {
 		aboutClick();
 	}
 	setViewStyle(currentView);
@@ -171,9 +177,9 @@ websocketfunction = function() {
 		} else {
 			new_url = "ws:";
 		}
-	new_url +=  "//" + loc.host;
-	new_url += loc.pathname + "sign-in";
+	new_url +=  "//" + root_url + "sign-in";
 	var ws = new WebSocket(new_url);
+
 	ws.onmessage = function(response){
 		console.log(response.data);
 		console.log(typeof(response.data), 'response data');

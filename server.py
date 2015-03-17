@@ -29,15 +29,20 @@ def signIn():
 		response = loginManager.signIn(email,password)
 		return response
 
-	if request.environ.get('wsgi.websocket'):		
+	if request.environ.get('wsgi.websocket'):
+		print "Socket 1"		
 		ws = request.environ['wsgi.websocket']
-		while True:			
+		print "Socket 2"
+		while True:	
+			print "Socket 3"
 			userToken = ws.receive()
 			email = sessionFunctions.getSessionEmail(userToken)
 			user_connection = {'email': email, 'conn': ws, 'token': userToken}
 			global ConnectedUsers 
-			logoutUserWebSocket(user_connection['email'])
-			ConnectedUsers.append(user_connection)
+			print ConnectedUsers
+			if logoutUserWebSocket(user_connection):
+				ConnectedUsers.append(user_connection)
+			print ConnectedUsers
 			publishLiveData()		
 	return logoutUserClick(user_connection['email'])
 
@@ -166,24 +171,26 @@ def publishLiveData():
 # and removes the uses that is currently trying to log in
 # This will log out the user if he is logged in in another
 # webbrowser through the use of websockets
-def logoutUserWebSocket(email):
+def logoutUserWebSocket(newConnection):
 	global ConnectedUsers
 	for item in ConnectedUsers:	
-		if (item['email'] == email):
-			connection = item['conn']
-			connection.send(item['token'])
-			ConnectedUsers.remove(item)
-	return ''
+		if (item['email'] == newConnection['email']):
+			if ((newConnection['conn'] != item['conn']) and (newConnection['token'] == item['token'])):
+				item['conn'] = newConnection['conn']
+				return False
+			else:
+				sender = item['conn']
+				sender.send(item['token'])
+				ConnectedUsers.remove(item)
+	return True
 
 # Removes a user from the ConnectedUsers list
 # when the user logs out
 def logoutUserClick(email):
 	global ConnectedUsers
-	print ConnectedUsers
 	for item in ConnectedUsers:
 		if (item['email'] == email):
 			ConnectedUsers.remove(item)
-	print ConnectedUsers
 	return ''
 
 
