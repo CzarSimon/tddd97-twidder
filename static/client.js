@@ -162,10 +162,17 @@ websocketfunction = function() {
 	var ws = new WebSocket(new_uri);
 	ws.onmessage = function(response){
 		console.log(response.data);
+		console.log(typeof(response.data), 'response data');
 		if (response.data == getMyToken()) {
 			console.log('Utloggad!')
 			logoutClick();
 		}
+		if (JSON.parse(response.data).type == 'live data') {
+			console.log(response.data);
+			var jsonData = JSON.parse(response.data)
+			console.log(jsonData.type);
+			publishData(jsonData.liveData);
+		}				
 	}
 	ws.onclose = function() {
 		console.log("We have crashlanded!");
@@ -256,8 +263,8 @@ function wallClick(email) {
 }
 
 function aboutClick() {
-	serverstub.postMessage(getMyToken(),'This is a message by the autoPoster');	
-	toggleMenu();
+	menuSelector('about-li');
+	openAboutPage();
 }
 
 function menuSelector(listId) {

@@ -8,7 +8,9 @@
 		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 		<!--<script src="/static/serverstub.js" type="text/javascript"></script>-->
 		<script src="/static/client.js" type="text/javascript"></script>
-		<script src="/static/serverCommunication.js" type="text/javascript"></script>	
+		<script src="/static/dataVisualisation.js" type="text/javascript"></script>
+		<script src="/static/serverCommunication.js" type="text/javascript"></script>
+		<script src="/static/Chart.js" type="text/javascript"></script>	
 		<script type="text/view" id="welcomeview">
 			<div class="welcome col-md-6 col-sm-8 col-xs-12 col-md-offset-3 col-sm-offset-2">
 
@@ -75,6 +77,30 @@
 						</from> 
 					</div>
 					<div id="content">
+
+					</div>
+					<div id="hidden-content" style="display: none">
+						<div id="about-page">
+							<div id='about-info'>
+								<h1>About</h1>
+								<p>This is twidder the secret network that your friends do not know about. You are too cool for school, you are #thuglife</p>
+							</div>
+							<div id='stats-info'>
+								<h1>Stats</h1>
+								<div id="member-canvas">
+									<canvas id="member-chart" width="300" height="300"></canvas>
+								</div>
+								<div id="message-canvas">
+									<canvas id="message-chart" width="300" height="300"></canvas>
+								</div>
+								<div id="hidden-live-data" style="display: none">	
+									<h4 id='signed-up-members'></h4>
+									<h4 id='signed-in-users'></h4>
+									<h4 id='posted-messages'></h4>
+									<h4 id='my-messages'></h4>
+								</div>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>

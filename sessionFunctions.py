@@ -102,9 +102,21 @@ def postMessage(token, email, message):
 		return json.dumps({	'success': False, 
 							'message': 'You are not signed in'})
 
+
+
 # ----- End of public functions -----
 
 # ----- Private functions -----
+
+# Gets the numer of signed up users and messages on the entire site.
+# Returns them in a dictionary.
+def getDataUpdate():
+	numberOfMessages = db.number_of_messages()
+	numberOfUsers = db.number_of_users()
+	return {'users': numberOfUsers, 'messages': numberOfMessages}
+
+def numberOfMessagesOnMyWall(email):
+	return {'myMessages': db.messages_on_my_wall(email)}
 
 """
 Checks that the old password was correct and that the new one was

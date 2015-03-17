@@ -24,7 +24,8 @@ def signIn():
 	if request.method == 'POST':
 		email = request.form['email']
 		password = request.form['password']
-		return loginManager.signIn(email,password)
+		response = loginManager.signIn(email,password)
+		return response
 
 	if request.environ.get('wsgi.websocket'):		
 		ws = request.environ['wsgi.websocket']
@@ -35,6 +36,7 @@ def signIn():
 			global ConnectedUsers 
 			logoutUserWebSocket(user_connection['email'])
 			ConnectedUsers.append(user_connection)
+			publishLiveData()
 			
 	return
 
@@ -48,12 +50,20 @@ def signUp():
 	gender = request.form['gender']
 	city = request.form['city']
 	country = request.form['country']
-	return loginManager.signUp(email, password, repeatPassword,firstname,familyname,gender,city,country)
+	response = loginManager.signUp(email, password, repeatPassword,firstname,familyname,gender,city,country)
+	publishLiveData();
+	return response
 
 @app.route("/sign-out", methods=["POST"])
 def signOut():
 	token = request.form['token']
-	return loginManager.signOut(token)
+	response = loginManager.signOut(token)
+	for user in ConnectedUsers:
+		if user['token'] == token:
+			ConnectedUsers.remove(user)
+			break
+	publishLiveData()
+	return response
 
 # ----- End of login routes -----
 
@@ -104,7 +114,11 @@ def postMessage():
 	token = request.form['token']
 	email = request.form['email']
 	message = request.form['message']
-	return sessionFunctions.postMessage(token, email, message)
+	response = sessionFunctions.postMessage(token, email, message)
+	print('before publishLiveData')
+	publishLiveData()
+	return response
+
 
 # ----- End of 'session functions' -----
 
@@ -130,6 +144,18 @@ def getUserToken():
 	token = 'not a token'
 
 	return token
+
+def publishLiveData():
+	global ConnectedUsers
+	print('in publish live data')
+	liveData = sessionFunctions.getDataUpdate()
+	liveData.update({'loggedIn': len(ConnectedUsers)})
+	for user in ConnectedUsers:
+		myMessages = sessionFunctions.numberOfMessagesOnMyWall(user['email'])
+		myLiveData = dict(liveData, **myMessages)
+		data = json.dumps({'type': 'live data', 'liveData': myLiveData})
+		connection = user['conn']
+		connection.send(data)
 
 def logoutUserWebSocket(email):
 	global ConnectedUsers

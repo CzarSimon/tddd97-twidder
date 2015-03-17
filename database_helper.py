@@ -80,6 +80,30 @@ def get_user_data_by_email(email):
         data = cur.fetchone()
         return data
 
+def number_of_users():
+    print('in db_h')
+    with con:
+        cur = con.cursor()
+        cur.execute('SELECT COUNT(*) FROM users')
+        data = cur.fetchone()[0]
+        return data
+
+def number_of_messages():
+    with con:
+        cur = con.cursor()
+        cur.execute('SELECT COUNT(*) FROM messages')
+        data = cur.fetchone()[0]
+        return data
+
+def messages_on_my_wall(email):
+    with con:
+        cur = con.cursor()
+        cur.execute('SELECT COUNT(*) FROM messages WHERE email_wall = ?', (email,))
+        data = cur.fetchone()[0]
+        print(data)
+        return data
+
+
 # Function that compares a given password to the hashed password assiciated with the
 # given email in the database
 # Parameters: 'email' (type: string), 'password' (type: string)

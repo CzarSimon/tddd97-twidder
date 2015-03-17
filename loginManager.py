@@ -51,7 +51,9 @@ def startNewDatabase():
 
 
 
+
 # --------- Private functions ---------
+
 
 # Creates and returns a 36 characters long random.
 # Parameters: None

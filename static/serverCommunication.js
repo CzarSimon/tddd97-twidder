@@ -48,10 +48,12 @@ messageToServer = function(token, email, message) {
 	var form = "token=" + token + "&email=" + email + "&message=" + message;
 	sendPost('POST', 'post-message', form, function(response) {
 		console.log(this.message);
-		if (email == "my email") {
-			getMessagesFromServer(token);
-		} else {
-			generateGuestWall(email);
+		if (this.success) {	
+			if (email == "my email") {
+				getMessagesFromServer(token);
+			} else {
+				generateGuestWall(email);
+			}
 		}
 	});
 }
