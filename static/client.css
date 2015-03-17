@@ -299,3 +299,8 @@ h1 {
 #message-icons {
 	padding: 0px;
 }
+
+a {
+    text-decoration: none !important;
+    color: #dd5500 !important;
+}

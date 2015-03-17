@@ -134,6 +134,10 @@ def profile():
 def search():
 	return render_template('client.html')
 
+@app.route('/about', methods=['GET','POST'])
+def about():
+	return render_template('client.html')
+
 
 
 
