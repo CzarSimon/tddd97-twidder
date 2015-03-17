@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="http://127.0.0.1:5000/" />
+<title>Test of the sign up</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">Test of the sign up</td></tr>
+</thead><tbody>
+<tr>
+	<td>open</td>
+	<td>/</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=signup-button</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=fname-SU</td>
+	<td>Mikael</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=lname-SU</td>
+	<td>Lietha</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=gender-SU</td>
+	<td>Male</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=city-SU</td>
+	<td>Linkoping</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=country-SU</td>
+	<td>Sweden</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=email-SU</td>
+	<td>Mikael</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=password-SU</td>
+	<td>12345</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=repeatPassword-SU</td>
+	<td>12</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=signup-button</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=country-SU</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=email-SU</td>
+	<td>Mikael@hotmail.com</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=signup-button</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=country-SU</td>
+	<td>Sweden</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=signup-button</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=repeatPassword-SU</td>
+	<td>1234</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=password-SU</td>
+	<td>1234</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=signup-button</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=password-SU</td>
+	<td>12345</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=repeatPassword-SU</td>
+	<td>12345</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=signup-button</td>
+	<td></td>
+</tr>
+
+</tbody></table>
+</body>
+</html>

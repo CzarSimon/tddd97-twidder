@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="http://127.0.0.1:5000/" />
+<title>Test of functionality</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">Test of functionality</td></tr>
+</thead><tbody>
+<tr>
+	<td>type</td>
+	<td>id=new-message</td>
+	<td>First post</td>
+</tr>
+<tr>
+	<td>submit</td>
+	<td>id=new-message-form</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=Wall</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=Search</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=search-bar</td>
+	<td>mikael.lietha@gmail.com</td>
+</tr>
+<tr>
+	<td>submit</td>
+	<td>id=submit-search-form</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=new-message</td>
+	<td>First post from Selenium!</td>
+</tr>
+<tr>
+	<td>submit</td>
+	<td>id=new-message-form</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=Profile</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=Search</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=search-bar</td>
+	<td>thuglife@gmail.com</td>
+</tr>
+<tr>
+	<td>submit</td>
+	<td>id=submit-search-form</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=new-message</td>
+	<td>Tjenare!</td>
+</tr>
+<tr>
+	<td>submit</td>
+	<td>id=new-message-form</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=Profile</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=password-button</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>css=input.change-password</td>
+	<td>12345</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>xpath=(//input[@type='password'])[2]</td>
+	<td>123456</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=password-button</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=logout-li</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=email-LI</td>
+	<td>Mikael@hotmail.com</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=password-LI</td>
+	<td>12345</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=login-button</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=password-LI</td>
+	<td>123456</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=login-button</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=Wall</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=new-message</td>
+	<td>Changed password works! (Y)</td>
+</tr>
+<tr>
+	<td>submit</td>
+	<td>id=new-message-form</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=logout-li</td>
+	<td></td>
+</tr>
+
+</tbody></table>
+</body>
+</html>
